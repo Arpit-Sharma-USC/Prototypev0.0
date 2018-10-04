@@ -6,13 +6,17 @@ public class SpawnItems : MonoBehaviour {
 
 
     public Transform[] SpawnPoints;
-    public float spawnTime=1.5f;
+    private float spawnTime=20.0f;
 
     public GameObject[] Coins;
 
 	// Use this for initialization
 	void Start () {
-     InvokeRepeating("SpawnCoins",spawnTime,spawnTime);
+        if (!(gameParametersContainer.gameParam == null))
+            spawnTime = float.Parse(gameParametersContainer.gameParam.respawnTime);
+
+        InvokeRepeating("SpawnCoins",spawnTime,spawnTime);
+        Debug.Log(spawnTime+"spawn");
 	}
 	
 	// Update is called once per frame

@@ -49,7 +49,7 @@ public class clientController : MonoBehaviour {
             myClient.RegisterHandler(MsgType.Connect, OnConnected);     
             myClient.RegisterHandler(MSG_GAME_PARAMETERS_START, startGame);     
             myClient.RegisterHandler(MSG_GAME_PARAMETERS_UPDATE, updateToGame);     
-            myClient.Connect("127.0.0.1", 4444);
+            myClient.Connect("10.122.196.176", 4444);//127.0.0.1
 
         }
 	}
