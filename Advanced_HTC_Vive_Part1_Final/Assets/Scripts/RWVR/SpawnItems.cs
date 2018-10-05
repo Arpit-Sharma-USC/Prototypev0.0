@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawnItems : MonoBehaviour {
+public class SpawnItems : DestroyScript {
 
 
     public Transform[] SpawnPoints;
@@ -29,8 +29,9 @@ public class SpawnItems : MonoBehaviour {
         int spawnIndex = Random.Range(0,SpawnPoints.Length);
 
         int objectIndex = Random.Range(0,Coins.Length);
-
-        Instantiate(Coins[objectIndex], SpawnPoints[spawnIndex].position, SpawnPoints[spawnIndex].rotation);
-
+        if(flag == false)
+        {
+            Instantiate(Coins[objectIndex], SpawnPoints[spawnIndex].position, SpawnPoints[spawnIndex].rotation);
+        }
     }
 }
