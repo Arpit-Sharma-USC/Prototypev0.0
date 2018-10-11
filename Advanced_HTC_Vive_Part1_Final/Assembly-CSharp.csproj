@@ -53,6 +53,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\PDT Item Spawner\Scripts\CustomItem.cs" />
+     <Compile Include="Assets\PDT Item Spawner\Scripts\CustomItemGatherer.cs" />
+     <Compile Include="Assets\PDT Item Spawner\Scripts\CustomItemManager.cs" />
+     <Compile Include="Assets\PDT Item Spawner\Scripts\CustomItemRespawn.cs" />
+     <Compile Include="Assets\PDT Item Spawner\Scripts\CustomItemSpawner.cs" />
+     <Compile Include="Assets\PDT Item Spawner\Scripts\CustomItemSpawnType.cs" />
      <Compile Include="Assets\Scripts\Premade\LoopRotate.cs" />
      <Compile Include="Assets\Scripts\Premade\Target.cs" />
      <Compile Include="Assets\Scripts\Premade\TargetPoleMover.cs" />
@@ -168,12 +174,14 @@
      <None Include="Assets\SteamVR\Resources\SteamVR_ClearAll.shader" />
      <None Include="Assets\SteamVR\InteractionSystem\Hints\Shaders\ControllerButtonHints.shader" />
      <None Include="Assets\SteamVR\InteractionSystem\Teleport\Shaders\Highlight.shader" />
+     <None Include="Assets\PDT Item Spawner\Resources\PDTFiles\Saved Data\CustomItemList.txt" />
      <None Include="Assets\SteamVR\Resources\SteamVR_SphericalProjection.shader" />
      <None Include="Assets\SteamVR\Resources\SteamVR_AlphaOut.shader" />
      <None Include="Assets\SteamVR\readme.txt" />
      <None Include="Assets\SteamVR\InteractionSystem\Core\Shaders\Silhouette.shader" />
      <None Include="Assets\SteamVR\Resources\SteamVR_ColorOut.shader" />
      <None Include="Assets\SteamVR\InteractionSystem\Core\Shaders\SeeThru.shader" />
+     <None Include="Assets\PDT Item Spawner\Documentation\README.txt" />
      <None Include="Assets\SteamVR\InteractionSystem\Readme_InteractionSystem.txt" />
  <Reference Include="UnityEditor.StandardEvents">
  <HintPath>D:/GitHub/Prototypev0.0/Advanced_HTC_Vive_Part1_Final/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
