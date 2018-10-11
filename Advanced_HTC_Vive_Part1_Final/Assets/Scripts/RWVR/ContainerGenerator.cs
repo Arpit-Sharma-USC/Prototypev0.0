@@ -66,9 +66,12 @@ public class ContainerGenerator : MonoBehaviour {
             if (flag == 1)
             {
                 tempObj.tag = myTag;
+                tempObj.SetActive(true);
+
                 Instantiate(tempObj, temp, rotat);
-                //tempObj.transform.parent = container.transform;
-                //tempObj.SetActive(false);
+                tempObj.transform.parent = container.transform;
+
+                tempObj = null;
             }
             count++;
         }
