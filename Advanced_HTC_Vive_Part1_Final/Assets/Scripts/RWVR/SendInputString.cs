@@ -13,14 +13,10 @@ public class SendInputString : MonoBehaviour {
     {
         DontDestroyOnLoad(this.gameObject);
         ContainerGenerator obj = new ContainerGenerator();
-       
     }
 
     public void ButtonPress() {
         input = PuzzleText.text;
-        //getInput(input);
-        //GetIP();
-        SceneManager.LoadScene("Game");
-
+        SceneManager.LoadScene("Game");       
     }
 }
