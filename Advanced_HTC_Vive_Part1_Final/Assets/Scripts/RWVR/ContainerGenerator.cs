@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -38,8 +39,10 @@ public class ContainerGenerator : MonoBehaviour {
        while (length > count)
         {
             Vector3 temp = transform.position;
+            Vector3 temp2 = transform.position;
             Quaternion rotat = transform.rotation;
             temp.z += 0.25f*(count+1);
+            temp2 = temp;
             //temp.y = 2;
             myTag = inputChild[count].ToString();
 
@@ -67,14 +70,19 @@ public class ContainerGenerator : MonoBehaviour {
             {
                 tempObj.tag = myTag;
                 tempObj.SetActive(true);
-
-                Instantiate(tempObj, temp, rotat);
+                temp2.x+= 0.198f-0.092f;
+                temp2.y+= -0.121f+0.055f;
+                temp2.z+= 0.242f-0.125f;
+                Instantiate(tempObj, temp2, rotat);
+                Debug.Log("position of child is " + tempObj.transform.position);
+                Debug.Log("position is "+temp);
                 tempObj.transform.parent = container.transform;
-
+                tempObj.transform.position = container.transform.position;
+                //tempObj.transform.localPosition = new Vector3(0, 0, 0);
+               // Instantiate(tempObj, temp, rotat);
                 tempObj = null;
             }
             count++;
         }
     }
-  
 }

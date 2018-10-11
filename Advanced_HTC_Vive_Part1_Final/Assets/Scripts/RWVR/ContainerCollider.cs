@@ -6,7 +6,6 @@ public class ContainerCollider : MonoBehaviour {
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Destroying after touch");
 
         if (collision.gameObject.name == gameObject.tag)
         {
