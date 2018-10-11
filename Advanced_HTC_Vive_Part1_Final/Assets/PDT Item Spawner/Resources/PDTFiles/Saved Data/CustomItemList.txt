@@ -1,16 +1,16 @@
 - Custom Item List - 
 Count =2
 -
-Type =Ball
-Prefab =Item
-Chance =1
+Type =Red Cube
+Prefab =RedCube
+Chance =0.5
 Unique =FALSE
-Pickupable =TRUE
+Pickupable =FALSE
 SpawnType =1
 -
-Type =Cube
-Prefab =Item2
-Chance =1
+Type =Blue Cube
+Prefab =YellowCube
+Chance =0.5
 Unique =FALSE
-Pickupable =TRUE
-SpawnType =0
+Pickupable =FALSE
+SpawnType =1
