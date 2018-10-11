@@ -10,8 +10,10 @@ public class ContainerGenerator : MonoBehaviour {
     //private SendInputString Obj;
     string inputChild;
     string myTag;
-    
-    // SendInputString Obj;
+
+    public GameObject A;
+    public GameObject B;
+    public GameObject C;
 
     public void Start()
     {
@@ -26,7 +28,7 @@ public class ContainerGenerator : MonoBehaviour {
         Debug.Log("message recieved is"+inputChild);
         CreateContainers();
     }
- 
+    
 
     /// <summary>
     /// creates container boxes
@@ -43,7 +45,31 @@ public class ContainerGenerator : MonoBehaviour {
 
             container.tag = this.myTag;
             Instantiate(container, temp, rotat);
-        
+            GameObject tempObj = null;
+            int flag = 0;
+            if (myTag == "A")
+            {
+                tempObj = A;
+                flag = 1;
+            }
+            else if (myTag == "B")
+            {
+                tempObj = B;
+                flag = 1;
+            }
+            else if (myTag == "C")
+            {
+                tempObj = C;
+                flag = 1;
+            }
+
+            if (flag == 1)
+            {
+                tempObj.tag = myTag;
+                Instantiate(tempObj, temp, rotat);
+                //tempObj.transform.parent = container.transform;
+                //tempObj.SetActive(false);
+            }
             count++;
         }
     }
