@@ -6,6 +6,7 @@ using UnityEngine;
 public class ContainerGenerator : MonoBehaviour {
 
     public GameObject container;
+    public GameObject parentContainer;
     public int length = 0;
     private int count = 0;
     //private SendInputString Obj;
@@ -39,6 +40,7 @@ public class ContainerGenerator : MonoBehaviour {
        while (length > count)
         {
             Vector3 temp = transform.position;
+           
             Vector3 temp2 = transform.position;
 
             Quaternion rotat = transform.rotation;
@@ -49,8 +51,13 @@ public class ContainerGenerator : MonoBehaviour {
             myTag = inputChild[count].ToString();
 
             container.tag = this.myTag;
-            Instantiate(container, temp, rotat);
-            GameObject tempObj = null;
+            //Debug.Log("NAmE:" + container.name);
+           // container.transform.parent = this.gameObject.transform;// position;
+
+            GameObject foo = Instantiate(container, temp, rotat);
+            foo.transform.parent = this.gameObject.transform;
+
+           GameObject tempObj = null;
             int flag = 0;
             if (myTag == "A")
             {
@@ -76,16 +83,27 @@ public class ContainerGenerator : MonoBehaviour {
                 temp2.x+= 0.198f-0.092f;
                 temp2.y+= -0.121f+0.055f;
                 temp2.z+= 0.242f-0.125f;
-                tempObj.transform.parent = container.transform;
-                tempObj.transform.position = container.transform.position;
 
-                Instantiate(tempObj, temp2, rotat);
+                //tempObj.transform.parent = container.transform;
+                // tempObj.transform.position = container.transform.position;
 
-              //  container.transform.GetChild(0).gameObject.SetActive(true);
+
+                GameObject childObj = Instantiate(tempObj, temp2, rotat);
+
+                childObj.transform.SetParent(foo.transform, true);
+                childObj.transform.position = temp2;
+
+
+                // childObJ.transform.parent = container.transform;
+                childObj.SetActive(false);
+
+                //  Instantiate(tempObj, temp2, rotat);
+
+                //  container.transform.GetChild(0).gameObject.SetActive(true);
                 //Debug.Log("Child"+container.transform.GetChild(0));
 
-           
-              
+
+
                 tempObj = null;
             }
             count++;

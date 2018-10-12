@@ -9,11 +9,12 @@ public class ContainerCollider : MonoBehaviour {
 
         if (collision.gameObject.name == gameObject.tag)
         {
-            Transform A = gameObject.transform;
+            Transform solutionObject = gameObject.transform;
             
             Debug.Log("Child!");
-            A.GetChild(0).gameObject.SetActive(true);
-            Debug.Log("Count :" + A.childCount);
+
+            solutionObject.GetChild(5).gameObject.SetActive(true);
+            Debug.Log("Count :" + solutionObject.childCount);
 
             //Debug.Log(gameObject.transform.GetChild(0));
             Destroy(collision.gameObject);

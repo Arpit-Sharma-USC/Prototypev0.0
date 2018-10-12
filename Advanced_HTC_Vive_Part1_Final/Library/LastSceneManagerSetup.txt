@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/3rdParty/Virtence/VText/_DemoScene/_scenes/01_StartScene.unity
+- path: Assets/Scenes/Start.unity
   isLoaded: 1
   isActive: 1
