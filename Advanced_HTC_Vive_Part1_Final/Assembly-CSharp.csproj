@@ -104,6 +104,7 @@
     <Compile Include="Assets\Scripts\RWVR\RWVR_SimpleGrab.cs" />
     <Compile Include="Assets\Scripts\RWVR\RWVR_SnapToController.cs" />
     <Compile Include="Assets\Scripts\RWVR\SendInputString.cs" />
+    <Compile Include="Assets\Scripts\RWVR\SpawnerSettings.cs" />
     <Compile Include="Assets\Scripts\RWVR\SpawnItems.cs" />
     <Compile Include="Assets\SpawnAddPhysics.cs" />
     <Compile Include="Assets\SteamVR\Extras\SteamVR_GazeTracker.cs" />

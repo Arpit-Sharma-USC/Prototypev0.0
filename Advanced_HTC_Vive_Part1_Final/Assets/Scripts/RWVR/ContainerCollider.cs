@@ -6,8 +6,10 @@ public class ContainerCollider : MonoBehaviour {
 
     private void OnCollisionEnter(Collision collision)
     {
+        char match_first = (collision.gameObject.name)[0];
+        string temp_str = match_first.ToString();
 
-        if (collision.gameObject.name == gameObject.tag)
+        if (temp_str == gameObject.tag)
         {
             Transform solutionObject = gameObject.transform;
             

@@ -27,7 +27,12 @@ ScriptedImporter:
     graphDescIndex: 0
     generateAllOutputs: 0
     generateMipMaps: 1
-    preset: " <sbspreset pkgurl=\"pkg://granite_grey_blue\" label=\"\" >\n </sbspreset>\n"
+    preset: " <sbspreset pkgurl=\"pkg://granite_grey_blue\" label=\"\" >\n  <presetinput
+      identifier=\"$outputsize\" uid=\"3009544608\" type=\"8\" value=\"12,12\" />\n
+      \ <presetinput identifier=\"granite_roughness\" uid=\"3257031182\" type=\"0\"
+      value=\"0.76\" />\n  <presetinput identifier=\"normal\" uid=\"3473154327\" type=\"4\"
+      value=\"0\" />\n  <presetinput identifier=\"luminosity\" uid=\"3057563675\"
+      type=\"0\" value=\"0.36\" />\n </sbspreset>\n"
     shaderName: Standard
     outputNames: baseColor,normal,metallic,height
     texturePackingList:
@@ -94,7 +99,7 @@ ScriptedImporter:
     - outputName: roughness
       bLinear: 1
     - outputName: metallic
-      bLinear: 1
+      bLinear: 0
     - outputName: height
       bLinear: 1
     inputTextureMap: []
@@ -102,9 +107,13 @@ ScriptedImporter:
     - label: 
       bLockRatio: 1
       bHighQuality: 0
-      textureWidth: 256
-      textureHeight: 256
+      textureWidth: 4096
+      textureHeight: 4096
       textureFormat: 0
       bGenerateOnLoad: 1
-    material: {instanceID: 0}
-    generatedTextures: []
+    material: {fileID: 2100000, guid: e842377973dbb6c4c85756333340acac, type: 3}
+    generatedTextures:
+    - {fileID: 2800000, guid: e842377973dbb6c4c85756333340acac, type: 3}
+    - {fileID: 2800002, guid: e842377973dbb6c4c85756333340acac, type: 3}
+    - {fileID: 2800004, guid: e842377973dbb6c4c85756333340acac, type: 3}
+    - {fileID: 2800006, guid: e842377973dbb6c4c85756333340acac, type: 3}
