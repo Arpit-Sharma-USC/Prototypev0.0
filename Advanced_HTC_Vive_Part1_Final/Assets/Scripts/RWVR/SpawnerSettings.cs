@@ -18,16 +18,18 @@ public class SpawnerSettings : MonoBehaviour
     public GameObject spawnerPlane;
     public int noOfRows = 1, noOfColumns = 1;
     public float spacing = 1;
+    //User Area - space left for the user, if 0, no space; if 1, 1 to 4 squares in the centre; every next number adds a layer of squares.
+    public int userArea = 1;
     //public int noOfSpawnedObjects = 0;
     public bool spawnAtMultiplePlaces = false;
     public float spawnIntensity = 50;
     public float spawnInterval = 3;
-    public float min_height = 0;
-    public float max_height = 0;
+    public float minHeight = 0;
+    public float maxHeight = 0;
     public GameObject[] gameObjects;
     //public ArrayList<GameObject> 
 
-    float time=0;
+    float time = 0;
 
     // Use this for initialization
     void Start()
@@ -60,12 +62,12 @@ public class SpawnerSettings : MonoBehaviour
                             if (Random.Range(0.0f, 100.0f) < spawnIntensity)
                             {
                                 int randGOindex = Random.Range(0, gameObjects.Length);
-                                float y_variation = Random.Range(min_height, max_height);
+                                float y_variation = Random.Range(minHeight, maxHeight);
                                 spawnPos.y += y_variation;
                                 spawnPos.y += gameObjects[randGOindex].GetComponent<Renderer>().bounds.size.y / 2;
                                 GameObject spawnedGO = Instantiate(gameObjects[randGOindex], spawnPos, Quaternion.identity);
                                 spawnedGO.transform.parent = transform;
-                               // Debug.Log("Spawning!");
+                                // Debug.Log("Spawning!");
                             }
                         }
                 }
@@ -73,6 +75,7 @@ public class SpawnerSettings : MonoBehaviour
                 else
                 {
                     List<Vector2> existingObjs = new List<Vector2>();
+                    preFill(existingObjs);
 
                     for (int g = 0; g < gameObjects.Length; g++)
                     {
@@ -106,7 +109,7 @@ public class SpawnerSettings : MonoBehaviour
                                                 Vector3 spawnPos = transform.position;
                                                 spawnPos.x += i * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / 10.0f);
                                                 spawnPos.z += j * (spawnerPlane.GetComponent<Renderer>().bounds.size.z + spacing / 10.0f);
-                                                float y_variation = Random.Range(min_height, max_height);
+                                                float y_variation = Random.Range(minHeight, maxHeight);
                                                 spawnPos.y += y_variation;
                                                 spawnPos.y += gameObjects[g].GetComponent<Renderer>().bounds.size.y / 2;
                                                 GameObject spawnedGO = Instantiate(gameObjects[g], spawnPos, Quaternion.identity);
@@ -132,7 +135,7 @@ public class SpawnerSettings : MonoBehaviour
                                                     Vector3 spawnPos = transform.position;
                                                     spawnPos.x += i * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / 10.0f);
                                                     spawnPos.z += j * (spawnerPlane.GetComponent<Renderer>().bounds.size.z + spacing / 10.0f);
-                                                    float y_variation = Random.Range(min_height, max_height);
+                                                    float y_variation = Random.Range(minHeight, maxHeight);
                                                     spawnPos.y += y_variation;
                                                     spawnPos.y += gameObjects[g].GetComponent<Renderer>().bounds.size.y / 2;
                                                     GameObject spawnedGO = Instantiate(gameObjects[g], spawnPos, Quaternion.identity);
@@ -154,7 +157,7 @@ public class SpawnerSettings : MonoBehaviour
                                 Vector3 spawnPos = transform.position;
                                 spawnPos.x += randx * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / 10.0f);
                                 spawnPos.z += randz * (spawnerPlane.GetComponent<Renderer>().bounds.size.z + spacing / 10.0f);
-                                float y_variation = Random.Range(min_height, max_height);
+                                float y_variation = Random.Range(minHeight, maxHeight);
                                 spawnPos.y += y_variation;
                                 spawnPos.y += gameObjects[g].GetComponent<Renderer>().bounds.size.y / 2;
                                 GameObject spawnedGO = Instantiate(gameObjects[g], spawnPos, Quaternion.identity);
@@ -176,35 +179,44 @@ public class SpawnerSettings : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-               
+        //For displaying in editor, no gameplay stuff in here.       
         if (Application.isEditor && !Application.isPlaying)
         {
             while (transform.childCount != 0)
             {
                 DestroyImmediate(transform.GetChild(0).gameObject);
             }
+            List<Vector2> nonSpawnedArea = new List<Vector2>();
+            preFill(nonSpawnedArea);
             for (int i = 0; i < noOfRows; i++)
                 for (int j = 0; j < noOfColumns; j++)
                 {
-                    Vector3 spawnPos = transform.position;
-                    spawnPos.x += i * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / 10.0f);
-                    spawnPos.z += j * (spawnerPlane.GetComponent<Renderer>().bounds.size.z + spacing / 10.0f);
-                    spawnPos.y += min_height;
-                    GameObject spawnedPlanes = Instantiate(spawnerPlane, spawnPos, Quaternion.identity);
-                    spawnedPlanes.transform.parent = transform;
-
-                }
-
-            if(max_height != 0)
-                for (int i = 0; i < noOfRows; i++)
-                    for (int j = 0; j < noOfColumns; j++)
+                    if(!nonSpawnedArea.Contains(new Vector2(i, j)))
                     {
                         Vector3 spawnPos = transform.position;
                         spawnPos.x += i * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / 10.0f);
                         spawnPos.z += j * (spawnerPlane.GetComponent<Renderer>().bounds.size.z + spacing / 10.0f);
-                        spawnPos.y += max_height;
+                        spawnPos.y += minHeight;
                         GameObject spawnedPlanes = Instantiate(spawnerPlane, spawnPos, Quaternion.identity);
                         spawnedPlanes.transform.parent = transform;
+                    }
+                    
+
+                }
+
+            if (maxHeight != 0)
+                for (int i = 0; i < noOfRows; i++)
+                    for (int j = 0; j < noOfColumns; j++)
+                    {
+                        if (!nonSpawnedArea.Contains(new Vector2(i, j)))
+                        {
+                            Vector3 spawnPos = transform.position;
+                            spawnPos.x += i * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / 10.0f);
+                            spawnPos.z += j * (spawnerPlane.GetComponent<Renderer>().bounds.size.z + spacing / 10.0f);
+                            spawnPos.y += maxHeight;
+                            GameObject spawnedPlanes = Instantiate(spawnerPlane, spawnPos, Quaternion.identity);
+                            spawnedPlanes.transform.parent = transform;
+                        }
 
                     }
         }
@@ -212,7 +224,7 @@ public class SpawnerSettings : MonoBehaviour
         if (Application.isPlaying)
         {
             time += Time.deltaTime;
-            if(time >= spawnInterval)
+            if (time >= spawnInterval)
             {
                 time = 0;
                 //Delete all existing objects.
@@ -230,7 +242,7 @@ public class SpawnerSettings : MonoBehaviour
                                 Vector3 spawnPos = transform.position;
                                 spawnPos.x += i * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / 10.0f);
                                 spawnPos.z += j * (spawnerPlane.GetComponent<Renderer>().bounds.size.z + spacing / 10.0f);
-                                float y_variation = Random.Range(min_height, max_height);
+                                float y_variation = Random.Range(minHeight, maxHeight);
                                 spawnPos.y += y_variation;
                                 if (Random.Range(0.0f, 100.0f) < spawnIntensity)
                                 {
@@ -245,6 +257,7 @@ public class SpawnerSettings : MonoBehaviour
                     else
                     {
                         List<Vector2> existingObjs = new List<Vector2>();
+                        preFill(existingObjs);
 
                         for (int g = 0; g < gameObjects.Length; g++)
                         {
@@ -278,7 +291,7 @@ public class SpawnerSettings : MonoBehaviour
                                                     Vector3 spawnPos = transform.position;
                                                     spawnPos.x += i * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / 10.0f);
                                                     spawnPos.z += j * (spawnerPlane.GetComponent<Renderer>().bounds.size.z + spacing / 10.0f);
-                                                    float y_variation = Random.Range(min_height, max_height);
+                                                    float y_variation = Random.Range(minHeight, maxHeight);
                                                     spawnPos.y += y_variation;
                                                     spawnPos.y += gameObjects[g].GetComponent<Renderer>().bounds.size.y / 2;
                                                     GameObject spawnedGO = Instantiate(gameObjects[g], spawnPos, Quaternion.identity);
@@ -292,7 +305,7 @@ public class SpawnerSettings : MonoBehaviour
                                                     Debug.Log("Occupied Position: " + i + "," + j);
                                                 }
                                             }
-                                                
+
                                         //Check for a spot from start to current spot.
                                         if (!foundSpot)
                                             Debug.Log("Didnt find a spot, trying from start.");
@@ -304,7 +317,7 @@ public class SpawnerSettings : MonoBehaviour
                                                         Vector3 spawnPos = transform.position;
                                                         spawnPos.x += i * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / 10.0f);
                                                         spawnPos.z += j * (spawnerPlane.GetComponent<Renderer>().bounds.size.z + spacing / 10.0f);
-                                                        float y_variation = Random.Range(min_height, max_height);
+                                                        float y_variation = Random.Range(minHeight, maxHeight);
                                                         spawnPos.y += y_variation;
                                                         spawnPos.y += gameObjects[g].GetComponent<Renderer>().bounds.size.y / 2;
                                                         GameObject spawnedGO = Instantiate(gameObjects[g], spawnPos, Quaternion.identity);
@@ -326,7 +339,7 @@ public class SpawnerSettings : MonoBehaviour
                                     Vector3 spawnPos = transform.position;
                                     spawnPos.x += randx * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / 10.0f);
                                     spawnPos.z += randz * (spawnerPlane.GetComponent<Renderer>().bounds.size.z + spacing / 10.0f);
-                                    float y_variation = Random.Range(min_height, max_height);
+                                    float y_variation = Random.Range(minHeight, maxHeight);
                                     spawnPos.y += y_variation;
                                     spawnPos.y += gameObjects[g].GetComponent<Renderer>().bounds.size.y / 2;
                                     GameObject spawnedGO = Instantiate(gameObjects[g], spawnPos, Quaternion.identity);
@@ -343,6 +356,53 @@ public class SpawnerSettings : MonoBehaviour
 
             }
         }
+    }
+
+    void preFill(List<Vector2> existingObjList)
+    {
+        if (userArea > 0)
+        {
+            //Debug.Log("Entered Prefill");
+            //Use hashSet instead of lists to avoid duplicate entries.
+            HashSet<int> rowNos = new HashSet<int>(), colNos = new HashSet<int>();
+            if (noOfRows % 2 != 0)
+                for (int i = 0; i < userArea; i++)
+                {
+                    rowNos.Add((noOfRows-1) / 2 + i);
+                    rowNos.Add((noOfRows - 1) / 2 - i);
+                }
+            else
+                for (int i = 0; i < userArea; i++)
+                {
+                    rowNos.Add((noOfRows - 1) / 2 + 1 + i);
+                    rowNos.Add((noOfRows - 1) / 2 - i);
+                }
+            //Debug.Log("rowNos count is: " + rowNos.Count);
+            //foreach (int item in rowNos) { Debug.Log("Row positions generated in preFill: " + item); }
+
+            if (noOfColumns % 2 != 0)
+                for (int i = 0; i < userArea; i++)
+                {
+                    colNos.Add((noOfColumns-1) / 2 + i);
+                    colNos.Add((noOfColumns - 1) / 2 - i);
+                }
+            else
+                for (int i = 0; i < userArea; i++)
+                {
+                    colNos.Add((noOfColumns - 1) / 2 + 1 + i);
+                    colNos.Add((noOfColumns - 1) / 2 - i);
+                }
+
+            //Debug.Log("colNos count is: " + colNos.Count);
+            //foreach (int item in colNos) { Debug.Log("Col positions generated in preFill: " + item); }
+
+            foreach (int rowNo in rowNos)
+                foreach (int colNo in colNos)
+                    existingObjList.Add(new Vector2(rowNo, colNo));
+
+            foreach (Vector2 item in existingObjList) { Debug.Log("Positions generated in preFill: " + item.x + "," + item.y); }
+        }
+
     }
 }
 //[CustomEditor(typeof(SpawnerSettings))]
@@ -364,6 +424,6 @@ public class SpawnerSettings : MonoBehaviour
 //    }
 
 //}
-   
+
 
 
