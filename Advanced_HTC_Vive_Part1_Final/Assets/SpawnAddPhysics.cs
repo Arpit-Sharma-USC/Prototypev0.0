@@ -9,7 +9,7 @@ public class SpawnAddPhysics : MonoBehaviour {
     {
         BoxCollider gameObjectBC = this.gameObject.AddComponent<BoxCollider>();
         //Rigidbody gameObjectRB;
-        this.gameObject.transform.RotateAround(transform.position, Vector3.up, 270);
+        //this.gameObject.transform.RotateAround(transform.position, Vector3.up, 270);
        
 
 

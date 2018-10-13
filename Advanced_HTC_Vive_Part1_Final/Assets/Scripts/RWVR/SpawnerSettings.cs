@@ -26,7 +26,10 @@ public class SpawnerSettings : MonoBehaviour
     public float spawnInterval = 3;
     public float minHeight = 0;
     public float maxHeight = 0;
+    public bool gravity = false;
+    Vector3 centerPoint;
     public GameObject[] gameObjects;
+
     //public ArrayList<GameObject> 
 
     float time = 0;
@@ -34,6 +37,12 @@ public class SpawnerSettings : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        gameObjects = Resources.LoadAll<GameObject>("Prefabs For Spawning");
+
+        //centerPoint.Set(0.6f,1.0869f,0.6f);
+        //centerPoint.Set(-3f, 4f, -5f);
+        centerPoint.Set(0f, 4.2f, 0f);
+        GameObject spawnedPlanes = Instantiate(spawnerPlane, centerPoint, Quaternion.identity);
         if (Application.isEditor && !Application.isPlaying)
         {
             //Debug.Log("Hello");
@@ -67,11 +76,14 @@ public class SpawnerSettings : MonoBehaviour
                                 spawnPos.y += gameObjects[randGOindex].GetComponent<Renderer>().bounds.size.y / 2;
                                 GameObject spawnedGO = Instantiate(gameObjects[randGOindex], spawnPos, Quaternion.identity);
                                 spawnedGO.transform.parent = transform;
+                                Rigidbody rb = spawnedGO.GetComponent<Rigidbody>();
+                                if (rb)
+                                    rb.useGravity = gravity;
                                 // Debug.Log("Spawning!");
                             }
                         }
                 }
-                //If each is to be spawned only once.
+                //If each object is to be spawned only once. Currently worked one.
                 else
                 {
                     List<Vector2> existingObjs = new List<Vector2>();
@@ -114,6 +126,14 @@ public class SpawnerSettings : MonoBehaviour
                                                 spawnPos.y += gameObjects[g].GetComponent<Renderer>().bounds.size.y / 2;
                                                 GameObject spawnedGO = Instantiate(gameObjects[g], spawnPos, Quaternion.identity);
                                                 spawnedGO.transform.parent = transform;
+                                                spawnedGO.transform.LookAt(centerPoint);
+                                                //spawnedGO.transform.Rotate(Vector3.up, -90);                                                
+                                                //spawnedGO.transform.rotation.eulerAngles.Set(spawnedGO.transform.rotation.eulerAngles.x, spawnedGO.transform.rotation.eulerAngles.y+90,0);
+                                                //spawnedGO.transform.localEulerAngles = (new Vector3(spawnedGO.transform.localEulerAngles.x, spawnedGO.transform.localEulerAngles.y + 180, spawnedGO.transform.localEulerAngles.z));
+                                                spawnedGO.transform.Rotate(0, 180, 0, Space.Self);
+                                                Rigidbody rb = spawnedGO.GetComponent<Rigidbody>();
+                                                if (rb)
+                                                    rb.useGravity = gravity;
                                                 existingObjs.Add(new Vector2(i, j));
                                                 foundSpot = true;
                                                 Debug.Log("Found a spot");
@@ -140,6 +160,15 @@ public class SpawnerSettings : MonoBehaviour
                                                     spawnPos.y += gameObjects[g].GetComponent<Renderer>().bounds.size.y / 2;
                                                     GameObject spawnedGO = Instantiate(gameObjects[g], spawnPos, Quaternion.identity);
                                                     spawnedGO.transform.parent = transform;
+                                                    spawnedGO.transform.LookAt(centerPoint);
+                                                    //spawnedGO.transform.Rotate(Vector3.up, -90);
+                                                    //spawnedGO.transform.rotation.eulerAngles.Set(spawnedGO.transform.rotation.eulerAngles.x, spawnedGO.transform.rotation.eulerAngles.y+90, 0);
+                                                    //spawnedGO.transform.localEulerAngles = (new Vector3(spawnedGO.transform.localEulerAngles.x, spawnedGO.transform.localEulerAngles.y + 180, 0));
+                                                    //spawnedGO.transform.localEulerAngles = (new Vector3(spawnedGO.transform.localEulerAngles.x, spawnedGO.transform.localEulerAngles.y + 180, spawnedGO.transform.localEulerAngles.z));
+                                                    spawnedGO.transform.Rotate(0, 180, 0, Space.Self);
+                                                    Rigidbody rb = spawnedGO.GetComponent<Rigidbody>();
+                                                    if (rb)
+                                                        rb.useGravity = gravity;
                                                     existingObjs.Add(new Vector2(i, j));
                                                     foundSpot = true;
                                                     Debug.Log("Found a spot");
@@ -162,6 +191,16 @@ public class SpawnerSettings : MonoBehaviour
                                 spawnPos.y += gameObjects[g].GetComponent<Renderer>().bounds.size.y / 2;
                                 GameObject spawnedGO = Instantiate(gameObjects[g], spawnPos, Quaternion.identity);
                                 spawnedGO.transform.parent = transform;
+                                spawnedGO.transform.LookAt(centerPoint);
+                                //spawnedGO.transform.Rotate(Vector3.up, -90);
+                                //spawnedGO.transform.rotation.eulerAngles.Set(spawnedGO.transform.rotation.eulerAngles.x, spawnedGO.transform.rotation.eulerAngles.y+90, 0);
+                                //spawnedGO.transform.localEulerAngles = (new Vector3(spawnedGO.transform.localEulerAngles.x, spawnedGO.transform.localEulerAngles.y + 180, 0));
+                                //spawnedGO.transform.localEulerAngles = (new Vector3(spawnedGO.transform.localEulerAngles.x, spawnedGO.transform.localEulerAngles.y + 180, spawnedGO.transform.localEulerAngles.z));
+                                //spawnedGO.transform.eulerAngles = (new Vector3(spawnedGO.transform.eulerAngles.x, spawnedGO.transform.eulerAngles.y + 180, spawnedGO.transform.localEulerAngles.z));
+                                spawnedGO.transform.Rotate(0, 180, 0, Space.Self);
+                                Rigidbody rb = spawnedGO.GetComponent<Rigidbody>();
+                                if (rb)
+                                    rb.useGravity = gravity;
                                 existingObjs.Add(new Vector2(randx, randz));
 
                             }
@@ -191,7 +230,7 @@ public class SpawnerSettings : MonoBehaviour
             for (int i = 0; i < noOfRows; i++)
                 for (int j = 0; j < noOfColumns; j++)
                 {
-                    if(!nonSpawnedArea.Contains(new Vector2(i, j)))
+                    if (!nonSpawnedArea.Contains(new Vector2(i, j)))
                     {
                         Vector3 spawnPos = transform.position;
                         spawnPos.x += i * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / 10.0f);
@@ -200,7 +239,7 @@ public class SpawnerSettings : MonoBehaviour
                         GameObject spawnedPlanes = Instantiate(spawnerPlane, spawnPos, Quaternion.identity);
                         spawnedPlanes.transform.parent = transform;
                     }
-                    
+
 
                 }
 
@@ -221,6 +260,7 @@ public class SpawnerSettings : MonoBehaviour
                     }
         }
 
+        //Actual game code.
         if (Application.isPlaying)
         {
             time += Time.deltaTime;
@@ -238,7 +278,6 @@ public class SpawnerSettings : MonoBehaviour
                         for (int i = 0; i < noOfRows; i++)
                             for (int j = 0; j < noOfColumns; j++)
                             {
-                                Debug.Log("in spawner!");
                                 Vector3 spawnPos = transform.position;
                                 spawnPos.x += i * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / 10.0f);
                                 spawnPos.z += j * (spawnerPlane.GetComponent<Renderer>().bounds.size.z + spacing / 10.0f);
@@ -250,7 +289,9 @@ public class SpawnerSettings : MonoBehaviour
                                     spawnPos.y += gameObjects[randGOindex].GetComponent<Renderer>().bounds.size.y / 2;
                                     GameObject spawnedGO = Instantiate(gameObjects[randGOindex], spawnPos, Quaternion.identity);
                                     spawnedGO.transform.parent = transform;
-                                    Debug.Log("Spawning!");
+                                    Rigidbody rb = spawnedGO.GetComponent<Rigidbody>();
+                                    if (rb)
+                                        rb.useGravity = gravity;
                                 }
                             }
                     }
@@ -296,6 +337,11 @@ public class SpawnerSettings : MonoBehaviour
                                                     spawnPos.y += gameObjects[g].GetComponent<Renderer>().bounds.size.y / 2;
                                                     GameObject spawnedGO = Instantiate(gameObjects[g], spawnPos, Quaternion.identity);
                                                     spawnedGO.transform.parent = transform;
+                                                    spawnedGO.transform.LookAt(centerPoint);
+                                                    spawnedGO.transform.Rotate(Vector3.up, 180);
+                                                    Rigidbody rb = spawnedGO.GetComponent<Rigidbody>();
+                                                    if (rb)
+                                                        rb.useGravity = gravity;
                                                     existingObjs.Add(new Vector2(i, j));
                                                     foundSpot = true;
                                                     Debug.Log("Found a spot");
@@ -322,6 +368,11 @@ public class SpawnerSettings : MonoBehaviour
                                                         spawnPos.y += gameObjects[g].GetComponent<Renderer>().bounds.size.y / 2;
                                                         GameObject spawnedGO = Instantiate(gameObjects[g], spawnPos, Quaternion.identity);
                                                         spawnedGO.transform.parent = transform;
+                                                        spawnedGO.transform.LookAt(centerPoint);
+                                                        spawnedGO.transform.Rotate(Vector3.up, 180);
+                                                        Rigidbody rb = spawnedGO.GetComponent<Rigidbody>();
+                                                        if (rb)
+                                                            rb.useGravity = gravity;
                                                         existingObjs.Add(new Vector2(i, j));
                                                         foundSpot = true;
                                                         Debug.Log("Found a spot");
@@ -344,6 +395,11 @@ public class SpawnerSettings : MonoBehaviour
                                     spawnPos.y += gameObjects[g].GetComponent<Renderer>().bounds.size.y / 2;
                                     GameObject spawnedGO = Instantiate(gameObjects[g], spawnPos, Quaternion.identity);
                                     spawnedGO.transform.parent = transform;
+                                    spawnedGO.transform.LookAt(centerPoint);
+                                    spawnedGO.transform.Rotate(Vector3.up, 180);
+                                    Rigidbody rb = spawnedGO.GetComponent<Rigidbody>();
+                                    if (rb)
+                                        rb.useGravity = gravity;
                                     existingObjs.Add(new Vector2(randx, randz));
 
                                 }
@@ -368,7 +424,7 @@ public class SpawnerSettings : MonoBehaviour
             if (noOfRows % 2 != 0)
                 for (int i = 0; i < userArea; i++)
                 {
-                    rowNos.Add((noOfRows-1) / 2 + i);
+                    rowNos.Add((noOfRows - 1) / 2 + i);
                     rowNos.Add((noOfRows - 1) / 2 - i);
                 }
             else
@@ -383,7 +439,7 @@ public class SpawnerSettings : MonoBehaviour
             if (noOfColumns % 2 != 0)
                 for (int i = 0; i < userArea; i++)
                 {
-                    colNos.Add((noOfColumns-1) / 2 + i);
+                    colNos.Add((noOfColumns - 1) / 2 + i);
                     colNos.Add((noOfColumns - 1) / 2 - i);
                 }
             else
