@@ -15,10 +15,11 @@
             "."
         ],
         "fbxSavePaths": [
+            "Prefabs/SCOREtEXT",
             "Prefabs/Alphabets",
             "."
         ],
-        "selectedFbxPath": 1,
+        "selectedFbxPath": 0,
         "selectedPrefabPath": 0,
         "dccOptionNames": [],
         "dccOptionPaths": [],
