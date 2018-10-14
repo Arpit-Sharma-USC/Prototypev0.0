@@ -9,23 +9,33 @@ public class ContainerCollider : MonoBehaviour {
     private AudioSource containerAudio;
     public AudioClip win; //set this in ispector with audiofile
     public AudioClip loose;
-    public Text ScoreText;
-
+    private Text scoreText;
+    GameObject score;
     private void Start()
     {
-        Debug.Log("Hello1");
+        Debug.Log("In Conainer Collider");
         containerAudio = GetComponent<AudioSource>();
         theScore = 0;
-        ScoreText.text = "Score" + theScore.ToString();
+        //ScoreText.text = "Score" + theScore.ToString();
+        score = GameObject.Find("Score");
+        scoreText=score.GetComponent<Text>();
+        scoreText.text = "Dude Man";
     }
     private void OnCollisionEnter(Collision collision)
     {
         Debug.Log("Hello");
 
-        if (collision.gameObject.name == gameObject.tag)
+        string gameObj = collision.gameObject.name;
+        string collisionObj = gameObject.tag;
+
+        Debug.Log(gameObj);
+        Debug.Log(collisionObj);
+
+        if (gameObj.Equals(collisionObj))
         {
+            Debug.Log("EQUAL PASSED");
             theScore += 50;
-            ScoreText.text = "Score: " + theScore.ToString();
+            scoreText.text = "Score: " + theScore.ToString();
 
             containerAudio.clip = win;
             containerAudio.Play();
@@ -46,6 +56,6 @@ public class ContainerCollider : MonoBehaviour {
             containerAudio.clip = loose;   
         }
 
-        containerAudio.Play();
+        //containerAudio.Play();
     }
 }

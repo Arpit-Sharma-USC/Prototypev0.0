@@ -1,6 +1,6 @@
 ﻿<Properties StartupConfiguration="{5EED8E68-EC3B-D69C-B8CD-6B0752B9EF46}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/RWVR/RWVR_InteractionObject.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Countdown.cs">
     <Files>
       <File FileName="Assets/Scripts/RWVR/ContainerCollider.cs" Line="25" Column="38" />
       <File FileName="Assets/Scripts/RWVR/RWVR_InteractionController.cs" Line="39" Column="14" />
