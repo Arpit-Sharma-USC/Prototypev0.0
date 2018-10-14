@@ -5,11 +5,11 @@
     <Files>
       <File FileName="Assets/Scripts/RWVR/RWVR_InteractionController.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Countdown.cs" Line="1" Column="1" />
-      <File FileName="Assets/ScoringSystem.cs" Line="13" Column="9" />
-      <File FileName="Assets/Scripts/RWVR/RWVR_SimpleGrab.cs" Line="48" Column="44" />
+      <File FileName="Assets/Scripts/RWVR/ContainerCollider.cs" Line="57" Column="35" />
+      <File FileName="Assets/ScoringSystem.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/RWVR/RWVR_SimpleGrab.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/RWVR/RWVR_SnapToController.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/RWVR/RWVR_InteractionObject.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/RWVR/ContainerCollider.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
