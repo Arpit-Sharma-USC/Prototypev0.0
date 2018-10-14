@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class ScoringSystem : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    public GameObject scoreText;
+    public int theScore;
+    public AudioSource collectSound;
+
+    private void OnTriggerEnter(Collider other)
+    {
+        
+    }
 }
