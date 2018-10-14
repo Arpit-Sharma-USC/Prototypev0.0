@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FloatingEffectController : MonoBehaviour {
+public class SpawnerObjectController : MonoBehaviour {
     // User Inputs
     public float degreesPerSecond = 15.0f;
     public float amplitude = 0.01f;
     public float frequency = 1f;
     public bool spin = false;
+    public bool floatingEffect = false;
+    public bool interacted = false;
     float startingPoint;
+    public Vector2 pos;
 
     // Position Storage Variables
     Vector3 posOffset = new Vector3();
@@ -29,10 +32,14 @@ public class FloatingEffectController : MonoBehaviour {
             transform.Rotate(new Vector3(0f, Time.deltaTime * degreesPerSecond, 0f), Space.World);
 
         // Float up/down with a Sin()
-        tempPos = posOffset;
-        
-        tempPos.y += Mathf.Sin(Time.fixedTime * Mathf.PI * frequency + startingPoint) * amplitude;
+        if (floatingEffect)
+        {
+            tempPos = posOffset;
 
-        transform.position = tempPos;
+            tempPos.y += Mathf.Sin(Time.fixedTime * Mathf.PI * frequency + startingPoint) * amplitude;
+
+            transform.position = tempPos;
+        }
+        
     }
 }
