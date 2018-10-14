@@ -60,6 +60,6 @@ public class ContainerCollider : MonoBehaviour {
             containerAudio.Play();
         }
 
-        containerAudio.Play();
+
     }
 }
