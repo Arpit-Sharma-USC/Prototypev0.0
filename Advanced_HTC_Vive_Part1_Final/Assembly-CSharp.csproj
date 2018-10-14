@@ -61,27 +61,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\3rdParty\Virtence\VText\_DemoScene\Scripts\AdditionalBehaviours\ColorChangeScript.cs" />
-    <Compile Include="Assets\3rdParty\Virtence\VText\_DemoScene\Scripts\AdditionalBehaviours\HighlightGlyph.cs" />
-    <Compile Include="Assets\3rdParty\Virtence\VText\_DemoScene\Scripts\AdditionalBehaviours\RotateGlyphs.cs" />
-    <Compile Include="Assets\3rdParty\Virtence\VText\_DemoScene\Scripts\Equalizer\AudioVisualizer.cs" />
-    <Compile Include="Assets\3rdParty\Virtence\VText\_DemoScene\Scripts\Physics\Player.cs" />
-    <Compile Include="Assets\3rdParty\Virtence\VText\_DemoScene\Scripts\Physics\SceneManager.cs" />
-    <Compile Include="Assets\3rdParty\Virtence\VText\_DemoScene\Scripts\Physics\SunController.cs" />
-    <Compile Include="Assets\3rdParty\Virtence\VText\_DemoScene\Scripts\StartScene\AnimGlyphs.cs" />
-    <Compile Include="Assets\3rdParty\Virtence\VText\_DemoScene\Scripts\StartScene\TimeTexter.cs" />
-    <Compile Include="Assets\3rdParty\Virtence\VText\_DemoScene\Scripts\StartScene\UIController.cs" />
-    <Compile Include="Assets\3rdParty\Virtence\VText\_DemoScene\Scripts\StartScene\VtextHandler.cs" />
-    <Compile Include="Assets\3rdParty\Virtence\VText\ExtensionMethods\ComponentExtensions.cs" />
-    <Compile Include="Assets\3rdParty\Virtence\VText\ExtensionMethods\GameObjectExtensions.cs" />
-    <Compile Include="Assets\3rdParty\Virtence\VText\ExtensionMethods\ObjectExtensions.cs" />
-    <Compile Include="Assets\3rdParty\Virtence\VText\Scripts\ThirdParty\Loom.cs" />
-    <Compile Include="Assets\3rdParty\Virtence\VText\Scripts\VText\EventHandling\GenericEventArgs.cs" />
-    <Compile Include="Assets\3rdParty\Virtence\VText\Scripts\VText\EventHandling\IGenericEventArgs.cs" />
-    <Compile Include="Assets\3rdParty\Virtence\VText\Scripts\VText\VFontHash.cs" />
-    <Compile Include="Assets\3rdParty\Virtence\VText\Scripts\VText\VFontInfo.cs" />
-    <Compile Include="Assets\3rdParty\Virtence\VText\Scripts\VText\VGlyphInfo.cs" />
-    <Compile Include="Assets\3rdParty\Virtence\VText\Scripts\VText\VTextInterface.cs" />
     <Compile Include="Assets\Environment\Water (Basic)\Scripts\WaterBasic.cs" />
     <Compile Include="Assets\Environment\Water\Water\Scripts\Displace.cs" />
     <Compile Include="Assets\Environment\Water\Water\Scripts\GerstnerDisplace.cs" />
@@ -96,7 +75,6 @@
     <Compile Include="Assets\Scripts\Premade\LoopRotate.cs" />
     <Compile Include="Assets\Scripts\Premade\Target.cs" />
     <Compile Include="Assets\Scripts\Premade\TargetPoleMover.cs" />
-    <Compile Include="Assets\Scripts\RWVR\clientController.cs" />
     <Compile Include="Assets\Scripts\RWVR\ContainerCollider.cs" />
     <Compile Include="Assets\Scripts\RWVR\ContainerGenerator.cs" />
     <Compile Include="Assets\Scripts\RWVR\DestroyScript.cs" />
@@ -212,13 +190,11 @@
     <None Include="Assets\SteamVR\Resources\SteamVR_ClearAll.shader" />
     <None Include="Assets\SteamVR\InteractionSystem\Hints\Shaders\ControllerButtonHints.shader" />
     <None Include="Assets\FbxExporters\RELEASE_NOTES.txt" />
-    <None Include="Assets\3rdParty\Virtence\VText\_DemoScene\Shader\Chrome.shader" />
     <None Include="Assets\Environment\Water\Water4\Shaders\FXWater4Simple.shader" />
     <None Include="Assets\SteamVR\InteractionSystem\Teleport\Shaders\Highlight.shader" />
     <None Include="Assets\Environment\Water (Basic)\Shaders\FXWaterBasic.shader" />
     <None Include="Assets\FbxExporters\README.txt" />
     <None Include="Assets\Environment\Water\Water\Shaders\FXWaterPro.shader" />
-    <None Include="Assets\3rdParty\Virtence\VText\_DemoScene\Shader\FrameFade.shader" />
     <None Include="Assets\SteamVR\Resources\SteamVR_SphericalProjection.shader" />
     <None Include="Assets\SteamVR\Resources\SteamVR_AlphaOut.shader" />
     <None Include="Assets\SteamVR\readme.txt" />

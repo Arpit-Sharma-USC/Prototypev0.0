@@ -61,19 +61,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\3rdParty\Virtence\VText\Scripts\Editor\VTextEditor\AbstractVTextEditorComponent.cs" />
-    <Compile Include="Assets\3rdParty\Virtence\VText\Scripts\Editor\VTextEditor\VTextEditor.cs" />
-    <Compile Include="Assets\3rdParty\Virtence\VText\Scripts\Editor\VTextEditor\VTextEditorAdditionalComponents.cs" />
-    <Compile Include="Assets\3rdParty\Virtence\VText\Scripts\Editor\VTextEditor\VTextEditorGUIHelper.cs" />
-    <Compile Include="Assets\3rdParty\Virtence\VText\Scripts\Editor\VTextEditor\VTextEditorHeader.cs" />
-    <Compile Include="Assets\3rdParty\Virtence\VText\Scripts\Editor\VTextEditor\VTextEditorLayout.cs" />
-    <Compile Include="Assets\3rdParty\Virtence\VText\Scripts\Editor\VTextEditor\VTextEditorMesh.cs" />
-    <Compile Include="Assets\3rdParty\Virtence\VText\Scripts\Editor\VTextEditor\VTextEditorPhysics.cs" />
-    <Compile Include="Assets\3rdParty\Virtence\VText\Scripts\Editor\VTextEditor\VTextEditorStyle.cs" />
-    <Compile Include="Assets\3rdParty\Virtence\VText\Scripts\Editor\VTextEditor\VTextEditorToolbar.cs" />
-    <Compile Include="Assets\3rdParty\Virtence\VText\Scripts\Editor\VTextEditor\VTextEditorTools.cs" />
-    <Compile Include="Assets\3rdParty\Virtence\VText\Scripts\Editor\VTextSetup\VTextInstallationSteps.cs" />
-    <Compile Include="Assets\3rdParty\Virtence\VText\Scripts\Editor\VTextSetup\VTextSetup.cs" />
     <Compile Include="Assets\SteamVR\Editor\SteamVR_Editor.cs" />
     <Compile Include="Assets\SteamVR\Editor\SteamVR_Preferences.cs" />
     <Compile Include="Assets\SteamVR\Editor\SteamVR_RenderModelEditor.cs" />
