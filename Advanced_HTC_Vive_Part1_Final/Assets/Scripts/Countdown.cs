@@ -49,6 +49,7 @@ public class Countdown : MonoBehaviour
             //int decimalPart = (int)timer % 1;
             //Debug.Log(decimalPart);
             int modifiedTimer = timer + 1;
+            //timer.ToString("F");
             if (timer != 9)
             {
                 GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("digit");
@@ -76,7 +77,7 @@ public class Countdown : MonoBehaviour
                 //Debug.Log(dest);
 
             }
-
+            Debug.Log(timer);
             myItem1 = (Instantiate(Resources.Load("Digit_" + timer)) as GameObject);
             myItem1.transform.position = new Vector3(0.15f, 9.67f, 13.92f);
             myItem1.tag = "digit";

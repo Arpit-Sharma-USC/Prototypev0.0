@@ -16,15 +16,22 @@ public class ContainerCollider : MonoBehaviour {
         Debug.Log("Hello1");
         containerAudio = GetComponent<AudioSource>();
         theScore = 0;
-        ScoreText.text = "Score" + theScore.ToString();
+        ScoreText = (Text)GameObject.Find("Score").GetComponent("Text");
     }
     private void OnCollisionEnter(Collision collision)
     {
         Debug.Log("Hello");
 
-        if (collision.gameObject.name == gameObject.tag)
+        string collisionObject=collision.gameObject.name;
+        string gameObjectTag = gameObject.tag;
+
+        Debug.Log(collisionObject);
+        Debug.Log(gameObjectTag);
+
+        if (collisionObject.Equals(gameObjectTag))
         {
             theScore += 50;
+            Debug.Log("New Score" + theScore);
             ScoreText.text = "Score: " + theScore.ToString();
 
             containerAudio.clip = win;
@@ -43,7 +50,8 @@ public class ContainerCollider : MonoBehaviour {
        }
         else if(collision.gameObject.name== "ContainerBox(Clone)" && collision.gameObject.name != gameObject.tag){
             Debug.Log("Play Loose");
-            containerAudio.clip = loose;   
+            containerAudio.clip = loose;
+            containerAudio.Play();
         }
 
         containerAudio.Play();
