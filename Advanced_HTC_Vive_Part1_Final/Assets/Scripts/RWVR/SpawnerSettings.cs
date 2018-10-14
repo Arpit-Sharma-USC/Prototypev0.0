@@ -16,20 +16,22 @@ using UnityEditor;
 public class SpawnerSettings : MonoBehaviour
 {
     public GameObject spawnerPlane;
+    public bool spawnAtMultiplePlaces = false;
     public int noOfRows = 1, noOfColumns = 1;
     public float spacing = 1;
-    //User Area - space left for the user, if 0, no space; if 1, 1 to 4 squares in the centre; every next number adds a layer of squares.
-    public int userArea = 1;
-    //public int noOfSpawnedObjects = 0;
-    public bool spawnAtMultiplePlaces = false;
-    public float spawnIntensity = 50;
-    public float spawnInterval = 3;
     public float minHeight = 0;
     public float maxHeight = 0;
+    //User Area - space left for the user, if 0, no space; if 1, 1 to 4 squares in the centre; every next number adds a layer of squares.
+    public int userArea = 1;
+    public bool alphabetsFaceUsersEye = true;
+    public bool useCustomUserEyeLocation = false;
+    public Vector3 userEyePoint;
+    //public int noOfSpawnedObjects = 0;    
+    public float spawnIntensity = 100;
+    public float spawnInterval = 3;
     public bool gravity = false;
-    Vector3 centerPoint;
     public GameObject[] gameObjects;
-
+    Vector3 centerPoint;
     //public ArrayList<GameObject> 
 
     float time = 0;
@@ -41,8 +43,12 @@ public class SpawnerSettings : MonoBehaviour
 
         //centerPoint.Set(0.6f,1.0869f,0.6f);
         //centerPoint.Set(-3f, 4f, -5f);
-        centerPoint.Set(0f, 4.2f, 0f);
-        GameObject spawnedPlanes = Instantiate(spawnerPlane, centerPoint, Quaternion.identity);
+        if (useCustomUserEyeLocation)
+            centerPoint = userEyePoint;
+        else
+            centerPoint.Set(0f, 4.2f, 0f);
+
+        //GameObject spawnedPlanes = Instantiate(spawnerPlane, centerPoint, Quaternion.identity);
         if (Application.isEditor && !Application.isPlaying)
         {
             //Debug.Log("Hello");
@@ -126,11 +132,16 @@ public class SpawnerSettings : MonoBehaviour
                                                 spawnPos.y += gameObjects[g].GetComponent<Renderer>().bounds.size.y / 2;
                                                 GameObject spawnedGO = Instantiate(gameObjects[g], spawnPos, Quaternion.identity);
                                                 spawnedGO.transform.parent = transform;
-                                                spawnedGO.transform.LookAt(centerPoint);
-                                                //spawnedGO.transform.Rotate(Vector3.up, -90);                                                
-                                                //spawnedGO.transform.rotation.eulerAngles.Set(spawnedGO.transform.rotation.eulerAngles.x, spawnedGO.transform.rotation.eulerAngles.y+90,0);
-                                                //spawnedGO.transform.localEulerAngles = (new Vector3(spawnedGO.transform.localEulerAngles.x, spawnedGO.transform.localEulerAngles.y + 180, spawnedGO.transform.localEulerAngles.z));
-                                                spawnedGO.transform.Rotate(0, 180, 0, Space.Self);
+
+                                                if (alphabetsFaceUsersEye)
+                                                {
+                                                    spawnedGO.transform.LookAt(centerPoint);
+                                                    //spawnedGO.transform.Rotate(Vector3.up, -90);                                                
+                                                    //spawnedGO.transform.rotation.eulerAngles.Set(spawnedGO.transform.rotation.eulerAngles.x, spawnedGO.transform.rotation.eulerAngles.y+90,0);
+                                                    //spawnedGO.transform.localEulerAngles = (new Vector3(spawnedGO.transform.localEulerAngles.x, spawnedGO.transform.localEulerAngles.y + 180, spawnedGO.transform.localEulerAngles.z));
+                                                    spawnedGO.transform.Rotate(0, 180, 0, Space.Self);
+                                                }
+                                                
                                                 Rigidbody rb = spawnedGO.GetComponent<Rigidbody>();
                                                 if (rb)
                                                     rb.useGravity = gravity;
@@ -160,12 +171,17 @@ public class SpawnerSettings : MonoBehaviour
                                                     spawnPos.y += gameObjects[g].GetComponent<Renderer>().bounds.size.y / 2;
                                                     GameObject spawnedGO = Instantiate(gameObjects[g], spawnPos, Quaternion.identity);
                                                     spawnedGO.transform.parent = transform;
-                                                    spawnedGO.transform.LookAt(centerPoint);
-                                                    //spawnedGO.transform.Rotate(Vector3.up, -90);
-                                                    //spawnedGO.transform.rotation.eulerAngles.Set(spawnedGO.transform.rotation.eulerAngles.x, spawnedGO.transform.rotation.eulerAngles.y+90, 0);
-                                                    //spawnedGO.transform.localEulerAngles = (new Vector3(spawnedGO.transform.localEulerAngles.x, spawnedGO.transform.localEulerAngles.y + 180, 0));
-                                                    //spawnedGO.transform.localEulerAngles = (new Vector3(spawnedGO.transform.localEulerAngles.x, spawnedGO.transform.localEulerAngles.y + 180, spawnedGO.transform.localEulerAngles.z));
-                                                    spawnedGO.transform.Rotate(0, 180, 0, Space.Self);
+
+                                                    if (alphabetsFaceUsersEye)
+                                                    {
+                                                        spawnedGO.transform.LookAt(centerPoint);
+                                                        //spawnedGO.transform.Rotate(Vector3.up, -90);
+                                                        //spawnedGO.transform.rotation.eulerAngles.Set(spawnedGO.transform.rotation.eulerAngles.x, spawnedGO.transform.rotation.eulerAngles.y+90, 0);
+                                                        //spawnedGO.transform.localEulerAngles = (new Vector3(spawnedGO.transform.localEulerAngles.x, spawnedGO.transform.localEulerAngles.y + 180, 0));
+                                                        //spawnedGO.transform.localEulerAngles = (new Vector3(spawnedGO.transform.localEulerAngles.x, spawnedGO.transform.localEulerAngles.y + 180, spawnedGO.transform.localEulerAngles.z));
+                                                        spawnedGO.transform.Rotate(0, 180, 0, Space.Self);
+                                                    }
+                                                    
                                                     Rigidbody rb = spawnedGO.GetComponent<Rigidbody>();
                                                     if (rb)
                                                         rb.useGravity = gravity;
@@ -191,13 +207,17 @@ public class SpawnerSettings : MonoBehaviour
                                 spawnPos.y += gameObjects[g].GetComponent<Renderer>().bounds.size.y / 2;
                                 GameObject spawnedGO = Instantiate(gameObjects[g], spawnPos, Quaternion.identity);
                                 spawnedGO.transform.parent = transform;
-                                spawnedGO.transform.LookAt(centerPoint);
-                                //spawnedGO.transform.Rotate(Vector3.up, -90);
-                                //spawnedGO.transform.rotation.eulerAngles.Set(spawnedGO.transform.rotation.eulerAngles.x, spawnedGO.transform.rotation.eulerAngles.y+90, 0);
-                                //spawnedGO.transform.localEulerAngles = (new Vector3(spawnedGO.transform.localEulerAngles.x, spawnedGO.transform.localEulerAngles.y + 180, 0));
-                                //spawnedGO.transform.localEulerAngles = (new Vector3(spawnedGO.transform.localEulerAngles.x, spawnedGO.transform.localEulerAngles.y + 180, spawnedGO.transform.localEulerAngles.z));
-                                //spawnedGO.transform.eulerAngles = (new Vector3(spawnedGO.transform.eulerAngles.x, spawnedGO.transform.eulerAngles.y + 180, spawnedGO.transform.localEulerAngles.z));
-                                spawnedGO.transform.Rotate(0, 180, 0, Space.Self);
+                                if (alphabetsFaceUsersEye)
+                                {
+                                    spawnedGO.transform.LookAt(centerPoint);
+                                    //spawnedGO.transform.Rotate(Vector3.up, -90);
+                                    //spawnedGO.transform.rotation.eulerAngles.Set(spawnedGO.transform.rotation.eulerAngles.x, spawnedGO.transform.rotation.eulerAngles.y+90, 0);
+                                    //spawnedGO.transform.localEulerAngles = (new Vector3(spawnedGO.transform.localEulerAngles.x, spawnedGO.transform.localEulerAngles.y + 180, 0));
+                                    //spawnedGO.transform.localEulerAngles = (new Vector3(spawnedGO.transform.localEulerAngles.x, spawnedGO.transform.localEulerAngles.y + 180, spawnedGO.transform.localEulerAngles.z));
+                                    //spawnedGO.transform.eulerAngles = (new Vector3(spawnedGO.transform.eulerAngles.x, spawnedGO.transform.eulerAngles.y + 180, spawnedGO.transform.localEulerAngles.z));
+                                    spawnedGO.transform.Rotate(0, 180, 0, Space.Self);
+                                }
+                                
                                 Rigidbody rb = spawnedGO.GetComponent<Rigidbody>();
                                 if (rb)
                                     rb.useGravity = gravity;
