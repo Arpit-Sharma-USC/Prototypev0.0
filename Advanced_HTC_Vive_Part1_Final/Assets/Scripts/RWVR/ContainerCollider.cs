@@ -9,18 +9,15 @@ public class ContainerCollider : MonoBehaviour {
     private AudioSource containerAudio;
     public AudioClip win; //set this in ispector with audiofile
     public AudioClip loose;
-    public GameObject ScoreText;
+    public Text ScoreText;
+    private GameObject scoreDigit;
 
     private void Start()
     {
         Debug.Log("Hello1");
         containerAudio = GetComponent<AudioSource>();
         theScore = 0;
-<<<<<<< HEAD
-        ScoreText=GameObject.Find("Score");
-=======
-        ScoreText = (Text)GameObject.Find("Score").GetComponent("Text");
->>>>>>> ea7fd3cb49840a11322e05b9acf5e3872cc4b80e
+        ScoreText=(Text)GameObject.Find("Score").GetComponent("Text");
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -34,18 +31,14 @@ public class ContainerCollider : MonoBehaviour {
 
         if (collisionObject.Equals(gameObjectTag))
         {
-<<<<<<< HEAD
-            Debug.Log("BC");
-            theScore += 20;
-            //ScoreText.text = "Score: " + theScore.ToString();
-            //ScoreText.guiText="Score: " + theScore.ToString();
+            theScore += 50;
+
             Text score=(Text)ScoreText.GetComponent("Text");
             score.text = theScore.ToString();
-=======
-            theScore += 50;
+
             Debug.Log("New Score" + theScore);
-            ScoreText.text = "Score: " + theScore.ToString();
->>>>>>> ea7fd3cb49840a11322e05b9acf5e3872cc4b80e
+            //ScoreText. = "Score: " + theScore.ToString();
+
 
             containerAudio.clip = win;
             containerAudio.Play();

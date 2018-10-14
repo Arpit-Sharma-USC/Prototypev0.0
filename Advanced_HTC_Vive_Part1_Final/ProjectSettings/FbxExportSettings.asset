@@ -15,6 +15,7 @@
             "."
         ],
         "fbxSavePaths": [
+            "Resources",
             "."
         ],
         "selectedFbxPath": 0,

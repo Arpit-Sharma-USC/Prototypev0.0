@@ -13,6 +13,7 @@ public class Countdown : MonoBehaviour
     GameObject myItem3;
     GameObject myItem4;
 
+    GameObject scoreDigit;
 
     private int timer;
     private bool canCount = true;
@@ -26,6 +27,17 @@ public class Countdown : MonoBehaviour
     void Start()
     {
         timer = mainTimer;
+
+        scoreDigit = (Instantiate(Resources.Load("Digit_0")) as GameObject);
+        scoreDigit.transform.position = new Vector3(4.66f, 8.62f, -13.00f);
+
+        Vector3 temp = scoreDigit.transform.rotation.eulerAngles;
+        temp.y = -183.96f;
+        scoreDigit.transform.rotation = Quaternion.Euler(temp);
+
+        //scoreDigit.transform.localScale += new Vector3(2f, 2f, 2f);
+        scoreDigit.tag = "Scoredigit";
+
 
     }
 
@@ -45,7 +57,7 @@ public class Countdown : MonoBehaviour
     {
         if (timer >= 0 && canCount)
         {
-            uiText.text = timer.ToString("F");
+            //uiText.text = timer.ToString("F");
             //int decimalPart = (int)timer % 1;
             //Debug.Log(decimalPart);
             int modifiedTimer = timer + 1;
@@ -80,23 +92,42 @@ public class Countdown : MonoBehaviour
             Debug.Log(timer);
             myItem1 = (Instantiate(Resources.Load("Digit_" + timer)) as GameObject);
             myItem1.transform.position = new Vector3(0.15f, 9.67f, 13.92f);
+            myItem1.transform.localScale+=new Vector3(2f,2f,2f);
             myItem1.tag = "digit";
             Debug.Log("Item1 is:" + myItem1);
 
             myItem2 = (Instantiate(Resources.Load("Digit_" + timer)) as GameObject);
-            myItem2.transform.position = new Vector3(15f, 9.67f, 1.33f);
+            myItem2.transform.position = new Vector3(12.07f, 8.3f, 1.61f);
+            Vector3 temp = myItem2.transform.rotation.eulerAngles;
+            temp.y = 87.78f;
+            myItem2.transform.rotation = Quaternion.Euler(temp);
+            myItem2.transform.localScale += new Vector3(2f, 2f, 2f);
+
             myItem2.tag = "digit";
 
             Debug.Log("Item2 is:" + myItem2);
 
             myItem3 = (Instantiate(Resources.Load("Digit_" + timer)) as GameObject);
             myItem3.transform.position = new Vector3(0.15f, 9.67f, -11.71f);
+
+            temp = myItem3.transform.rotation.eulerAngles;
+            temp.y = 187.00f;
+            myItem3.transform.rotation = Quaternion.Euler(temp);
+            myItem3.transform.localScale += new Vector3(2f, 2f, 2f);
+
             myItem3.tag = "digit";
 
             Debug.Log("Item3 is:" + myItem3);
 
             myItem4 = (Instantiate(Resources.Load("Digit_" + timer)) as GameObject);
             myItem4.transform.position = new Vector3(-13.16f, 8.06f, 0.31f);
+
+            temp = myItem4.transform.rotation.eulerAngles;
+            temp.y = -90.78f;
+            myItem4.transform.rotation = Quaternion.Euler(temp);
+            myItem4.transform.localScale += new Vector3(2f, 2f, 2f);
+
+
             myItem4.tag = "digit";
 
             Debug.Log("Item4 is:" + myItem4);
