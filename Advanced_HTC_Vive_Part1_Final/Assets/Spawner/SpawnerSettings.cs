@@ -15,22 +15,37 @@ using UnityEditor;
 [ExecuteInEditMode]
 public class SpawnerSettings : MonoBehaviour
 {
+    /////Spawned Location Indicator Object/////
     public GameObject spawnerPlane;
+
+    /////Type of Spawner/////
     public bool spawnAtMultiplePlaces = false;
+
+    /////Spawn Area Setup/////
     public int noOfRows = 1, noOfColumns = 1;
     public float spacing = 1;
     public float minHeight = 0;
     public float maxHeight = 0;
-    //User Area - space left for the user, if 0, no space; if 1, 1 to 4 squares in the centre; every next number adds a layer of squares.
+
+    /////User Based Setup/////
+    //User Area - space left for the user;
+    //if 0, no space; if 1, 1 to 4 squares in the centre; 
+    //every next number adds a layer of squares.
     public int userArea = 1;
     public bool alphabetsFaceUsersEye = true;
     public bool useCustomUserEyeLocation = false;
     public Vector3 userEyePoint;
-    //public int noOfSpawnedObjects = 0;    
+
+    /////Spawn Dynamics Settings/////
     public float spawnIntensity = 100;
     public float spawnInterval = 3;
     public bool gravity = false;
+
+    /////Spawned Objects/////
     public GameObject[] gameObjects;
+
+
+
     Vector3 centerPoint;
     //public ArrayList<GameObject> 
 
