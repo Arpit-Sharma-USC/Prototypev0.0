@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 using UnityEditor;
 
@@ -50,27 +51,22 @@ public class SpawnerSettings : MonoBehaviour
     public bool spin = false;
     public float rotationSpeed = 15.0f;
 
+    public bool mutipleOccurencesProducesDuplicates = true;
+    public int repetition = 0;
+    public string solutionString;
     /////Spawned Objects/////
-    public GameObject[] gameObjects;
+    public List<GameObject> gameObjects;
 
-
-
+    List<Vector2> existingObjs;
+    string solution;
     Vector3 centerPoint;
     float spacingScaleFactor = 10.0f;
-
     float time = 0;
 
     // Use this for initialization
     void Start()
     {
-        gameObjects = Resources.LoadAll<GameObject>("Spawner Prefabs");
-
-        //centerPoint.Set(0.6f,1.0869f,0.6f);
-        //centerPoint.Set(-3f, 4f, -5f);
-        if (useCustomUserEyeLocation)
-            centerPoint = userEyePoint;
-        else
-            centerPoint.Set(0f, 4.2f, 0f);
+        
 
         //GameObject spawnedPlanes = Instantiate(spawnerPlane, centerPoint, Quaternion.identity);
         if (Application.isEditor && !Application.isPlaying)
@@ -81,13 +77,71 @@ public class SpawnerSettings : MonoBehaviour
         //if (Application.isPlaying)
         if (Application.isPlaying)
         {
+            existingObjs = new List<Vector2>();
+            preFill();
+            GameObject[] alphabets = Resources.LoadAll<GameObject>("Spawner Prefabs");
+            gameObjects = new List<GameObject>();
+            GameObject Parent = GameObject.Find("Parent");
+            SendInputString ParentInputObject = Parent.GetComponent<SendInputString>();
+            if (ParentInputObject)
+            {
+
+                solution = solutionString;
+                for (int i = 0; i <= repetition; i++)
+                    foreach (char letter in solution)
+                    {
+                        foreach (GameObject go in alphabets)
+                        {
+                            if (char.ToLower(go.name[0]) == char.ToLower(letter))
+                                if (mutipleOccurencesProducesDuplicates)
+                                    gameObjects.Add(go);
+                                else if (!gameObjects.Contains(go))
+                                    gameObjects.Add(go);
+                        }
+                    }
+            }
+            else
+            {
+                solution = solutionString;
+                for (int i = 0; i <= repetition; i++)
+                    foreach (char letter in solution)
+                    {
+                        foreach (GameObject go in alphabets)
+                        {
+                            if (char.ToLower(go.name[0]) == char.ToLower(letter))
+                                if (mutipleOccurencesProducesDuplicates)
+                                    gameObjects.Add(go);
+                                else if (!gameObjects.Contains(go))
+                                    gameObjects.Add(go);
+                        }
+                    }
+
+            }
+
+            List<GameObject> nonSolutionAlphabets = new List<GameObject>();
+            foreach (GameObject go in alphabets)
+                if (!gameObjects.Contains(go))
+                    nonSolutionAlphabets.Add(go);
+
+            nonSolutionAlphabets = nonSolutionAlphabets.OrderBy(x => Random.value).ToList();
+            foreach (GameObject go in nonSolutionAlphabets)
+                gameObjects.Add(go);
+
+            foreach (GameObject go in gameObjects) Debug.Log(go.name);
+                        
+            //centerPoint.Set(0.6f,1.0869f,0.6f);
+            //centerPoint.Set(-3f, 4f, -5f);
+            if (useCustomUserEyeLocation)
+                centerPoint = userEyePoint;
+            else
+                centerPoint.Set(0f, 4.2f, 0f);
             //gameObjects = new GameObject[noOfSpawnedObjects];
             foreach (Transform child in transform)
             {
                 GameObject.Destroy(child.gameObject);
             }
 
-            if (gameObjects.Length > 0)
+            if (gameObjects.Count > 0)
                 //If no restriction on spawnining duplicates.
                 if (spawnAtMultiplePlaces)
                 {
@@ -100,7 +154,7 @@ public class SpawnerSettings : MonoBehaviour
                             spawnPos.z += j * (spawnerPlane.GetComponent<Renderer>().bounds.size.z + spacing / spacingScaleFactor);
                             if (Random.Range(0.0f, 100.0f) < spawnIntensity)
                             {
-                                int randGOindex = Random.Range(0, gameObjects.Length);
+                                int randGOindex = Random.Range(0, gameObjects.Count);
                                 float y_variation = Random.Range(minHeight, maxHeight);
                                 spawnPos.y += y_variation;
                                 spawnPos.y += gameObjects[randGOindex].GetComponent<Renderer>().bounds.size.y / 2;
@@ -115,11 +169,9 @@ public class SpawnerSettings : MonoBehaviour
                 }
                 //If each object is to be spawned only once. Currently worked one.
                 else
-                {
-                    List<Vector2> existingObjs = new List<Vector2>();
-                    preFill(existingObjs);
+                {                   
 
-                    for (int g = 0; g < gameObjects.Length; g++)
+                    for (int g = 0; g < gameObjects.Count; g++)
                     {
                         Debug.Log("Obj: " + g);
                         float randIntensity = Random.Range(0.0f, 100.0f);
@@ -149,7 +201,7 @@ public class SpawnerSettings : MonoBehaviour
                                                 continue;
                                             if (!existingObjs.Contains(new Vector2(i, j)) && !foundSpot)
                                             {
-                                                spawn(i, j, g, existingObjs);
+                                                spawn(i, j, g);
                                                 foundSpot = true;
                                                 Debug.Log("Found a spot");
                                             }
@@ -163,7 +215,7 @@ public class SpawnerSettings : MonoBehaviour
                                             for (int j = 0; j < noOfColumns; j++)
                                                 if (!existingObjs.Contains(new Vector2(i, j)) && !foundSpot)
                                                 {
-                                                    spawn(i, j, g, existingObjs);
+                                                    spawn(i, j, g);
                                                     foundSpot = true;
                                                     Debug.Log("Found a spot");
                                                 }
@@ -176,7 +228,7 @@ public class SpawnerSettings : MonoBehaviour
                             else
                             {
                                 Debug.Log("Location free!");
-                                spawn(randx, randz, g, existingObjs);
+                                spawn(randx, randz, g);
 
                             }
                         }
@@ -200,12 +252,11 @@ public class SpawnerSettings : MonoBehaviour
             {
                 DestroyImmediate(transform.GetChild(0).gameObject);
             }
-            List<Vector2> nonSpawnedArea = new List<Vector2>();
-            preFill(nonSpawnedArea);
+            preFill();           
             for (int i = 0; i < noOfRows; i++)
                 for (int j = 0; j < noOfColumns; j++)
                 {
-                    if (!nonSpawnedArea.Contains(new Vector2(i, j)))
+                    if (!existingObjs.Contains(new Vector2(i, j)))
                     {
                         Vector3 spawnPos = transform.position;
                         spawnPos.x += i * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / spacingScaleFactor);
@@ -222,7 +273,7 @@ public class SpawnerSettings : MonoBehaviour
                 for (int i = 0; i < noOfRows; i++)
                     for (int j = 0; j < noOfColumns; j++)
                     {
-                        if (!nonSpawnedArea.Contains(new Vector2(i, j)))
+                        if (!existingObjs.Contains(new Vector2(i, j)))
                         {
                             Vector3 spawnPos = transform.position;
                             spawnPos.x += i * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / spacingScaleFactor);
@@ -247,7 +298,7 @@ public class SpawnerSettings : MonoBehaviour
                 {
                     GameObject.Destroy(child.gameObject);
                 }
-                if (gameObjects.Length > 0)
+                if (gameObjects.Count > 0)
                     if (spawnAtMultiplePlaces)
                     {
                         for (int i = 0; i < noOfRows; i++)
@@ -260,7 +311,7 @@ public class SpawnerSettings : MonoBehaviour
                                 spawnPos.y += y_variation;
                                 if (Random.Range(0.0f, 100.0f) < spawnIntensity)
                                 {
-                                    int randGOindex = Random.Range(0, gameObjects.Length);
+                                    int randGOindex = Random.Range(0, gameObjects.Count);
                                     spawnPos.y += gameObjects[randGOindex].GetComponent<Renderer>().bounds.size.y / 2;
                                     GameObject spawnedGO = Instantiate(gameObjects[randGOindex], spawnPos, Quaternion.identity);
                                     spawnedGO.transform.parent = transform;
@@ -272,10 +323,9 @@ public class SpawnerSettings : MonoBehaviour
                     }
                     else
                     {
-                        List<Vector2> existingObjs = new List<Vector2>();
-                        preFill(existingObjs);
+                        
 
-                        for (int g = 0; g < gameObjects.Length; g++)
+                        for (int g = 0; g < gameObjects.Count; g++)
                         {
                             Debug.Log("Obj: " + g);
                             float randIntensity = Random.Range(0.0f, 100.0f);
@@ -389,7 +439,7 @@ public class SpawnerSettings : MonoBehaviour
         }
     }
 
-    void spawn(int rowSpawnedAt, int colSpawnedAt, int gameObjectIndex, List<Vector2> existingObjList)
+    void spawn(int rowSpawnedAt, int colSpawnedAt, int gameObjectIndex)
     {
         Vector3 spawnPos = transform.position;
         spawnPos.x += rowSpawnedAt * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / spacingScaleFactor);
@@ -428,11 +478,11 @@ public class SpawnerSettings : MonoBehaviour
             fe.spin = spin;
             fe.degreesPerSecond = rotationSpeed;
         }
-            
-        existingObjList.Add(new Vector2(rowSpawnedAt, colSpawnedAt));
+
+        existingObjs.Add(new Vector2(rowSpawnedAt, colSpawnedAt));
     }
 
-    void preFill(List<Vector2> existingObjList)
+    void preFill()
     {
         if (userArea > 0)
         {
@@ -472,9 +522,10 @@ public class SpawnerSettings : MonoBehaviour
 
             foreach (int rowNo in rowNos)
                 foreach (int colNo in colNos)
-                    existingObjList.Add(new Vector2(rowNo, colNo));
+                    if(!existingObjs.Contains(new Vector2(rowNo, colNo)))
+                        existingObjs.Add(new Vector2(rowNo, colNo));
 
-            foreach (Vector2 item in existingObjList) { Debug.Log("Positions generated in preFill: " + item.x + "," + item.y); }
+            //foreach (Vector2 item in existingObjList) { Debug.Log("Positions generated in preFill: " + item.x + "," + item.y); }
         }
 
     }
