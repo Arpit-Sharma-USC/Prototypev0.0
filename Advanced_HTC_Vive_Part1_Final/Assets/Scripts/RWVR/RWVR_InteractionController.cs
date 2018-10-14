@@ -43,6 +43,7 @@ public class RWVR_InteractionController : MonoBehaviour {
                 ///
                 ///sound forinteracting with gameobject 
                 ///
+                Debug.Log("Play Audio");
                 GetComponent<AudioSource>().Play();
                 // toggle spawn flag : change goes here
 
