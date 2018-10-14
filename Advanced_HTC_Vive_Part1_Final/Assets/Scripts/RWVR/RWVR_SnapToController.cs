@@ -54,6 +54,7 @@ public class RWVR_SnapToController : RWVR_InteractionObject
 
     public override void OnTriggerWasReleased(RWVR_InteractionController controller)
     {
+        GetComponent<AudioSource>().Play();
         base.OnTriggerWasReleased(controller);
 
         if (hideControllerModel)

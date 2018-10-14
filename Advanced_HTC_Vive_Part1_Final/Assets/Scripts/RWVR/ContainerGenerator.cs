@@ -71,7 +71,7 @@ public class ContainerGenerator : MonoBehaviour {
             if (flag == 1)
             {
                 tempObj.tag = myTag;
-                tempObj.SetActive(false);
+                tempObj.SetActive(true);
 
                 temp2.x+= 0.198f-0.092f;
                 temp2.y+= -0.121f+0.055f;
