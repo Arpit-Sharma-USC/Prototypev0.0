@@ -35,11 +35,20 @@ public class SpawnerSettings : MonoBehaviour
     public bool alphabetsFaceUsersEye = true;
     public bool useCustomUserEyeLocation = false;
     public Vector3 userEyePoint;
+    public bool limitMaximumPitchChange = false;
+    public float maximumPitchChange = 30.0f;
 
     /////Spawn Dynamics Settings/////
     public float spawnIntensity = 100;
     public float spawnInterval = 3;
     public bool gravity = false;
+
+    /////Floating Effect/////
+    public bool floatingEffect = true;
+    public float height = 0.01f;
+    public float frequency = 1;
+    public bool spin = false;
+    public float rotationSpeed = 15.0f;
 
     /////Spawned Objects/////
     public GameObject[] gameObjects;
@@ -47,14 +56,14 @@ public class SpawnerSettings : MonoBehaviour
 
 
     Vector3 centerPoint;
-    //public ArrayList<GameObject> 
+    float spacingScaleFactor = 10.0f;
 
     float time = 0;
 
     // Use this for initialization
     void Start()
     {
-        gameObjects = Resources.LoadAll<GameObject>("Prefabs For Spawning");
+        gameObjects = Resources.LoadAll<GameObject>("Spawner Prefabs");
 
         //centerPoint.Set(0.6f,1.0869f,0.6f);
         //centerPoint.Set(-3f, 4f, -5f);
@@ -87,8 +96,8 @@ public class SpawnerSettings : MonoBehaviour
                         {
                             //Debug.Log("in spawner!");
                             Vector3 spawnPos = transform.position;
-                            spawnPos.x += i * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / 10.0f);
-                            spawnPos.z += j * (spawnerPlane.GetComponent<Renderer>().bounds.size.z + spacing / 10.0f);
+                            spawnPos.x += i * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / spacingScaleFactor);
+                            spawnPos.z += j * (spawnerPlane.GetComponent<Renderer>().bounds.size.z + spacing / spacingScaleFactor);
                             if (Random.Range(0.0f, 100.0f) < spawnIntensity)
                             {
                                 int randGOindex = Random.Range(0, gameObjects.Length);
@@ -125,12 +134,13 @@ public class SpawnerSettings : MonoBehaviour
                             //Check if spot is already occupied.
                             if (existingObjs.Contains(new Vector2(randx, randz)))
                             {
+                                Debug.Log("Location not free!");
+
                                 //If grid still has spots, check next available spot from current spot.
                                 if (existingObjs.Count <= (noOfRows * noOfColumns))
                                 {
-                                    Debug.Log("Location not free!");
-                                    //foreach (Vector2 item in existingObjs) { Debug.Log("Positions occupied: " + item.x + "," + item.y); }
                                     bool foundSpot = false;
+                                    //Check for next available spot from the current spot.
                                     Debug.Log("Checking next available spot from current spot.");
                                     for (int i = randx + 1; i < noOfRows; i++)
                                         for (int j = 0; j < noOfColumns; j++)
@@ -139,104 +149,34 @@ public class SpawnerSettings : MonoBehaviour
                                                 continue;
                                             if (!existingObjs.Contains(new Vector2(i, j)) && !foundSpot)
                                             {
-                                                Vector3 spawnPos = transform.position;
-                                                spawnPos.x += i * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / 10.0f);
-                                                spawnPos.z += j * (spawnerPlane.GetComponent<Renderer>().bounds.size.z + spacing / 10.0f);
-                                                float y_variation = Random.Range(minHeight, maxHeight);
-                                                spawnPos.y += y_variation;
-                                                spawnPos.y += gameObjects[g].GetComponent<Renderer>().bounds.size.y / 2;
-                                                GameObject spawnedGO = Instantiate(gameObjects[g], spawnPos, Quaternion.identity);
-                                                spawnedGO.transform.parent = transform;
-
-                                                if (alphabetsFaceUsersEye)
-                                                {
-                                                    spawnedGO.transform.LookAt(centerPoint);
-                                                    //spawnedGO.transform.Rotate(Vector3.up, -90);                                                
-                                                    //spawnedGO.transform.rotation.eulerAngles.Set(spawnedGO.transform.rotation.eulerAngles.x, spawnedGO.transform.rotation.eulerAngles.y+90,0);
-                                                    //spawnedGO.transform.localEulerAngles = (new Vector3(spawnedGO.transform.localEulerAngles.x, spawnedGO.transform.localEulerAngles.y + 180, spawnedGO.transform.localEulerAngles.z));
-                                                    spawnedGO.transform.Rotate(0, 180, 0, Space.Self);
-                                                }
-                                                
-                                                Rigidbody rb = spawnedGO.GetComponent<Rigidbody>();
-                                                if (rb)
-                                                    rb.useGravity = gravity;
-                                                existingObjs.Add(new Vector2(i, j));
+                                                spawn(i, j, g, existingObjs);
                                                 foundSpot = true;
                                                 Debug.Log("Found a spot");
                                             }
-                                            else
-                                            {
-                                                Debug.Log("Occupied Position: " + i + "," + j);
-                                            }
                                         }
 
-                                    //Check for a spot from start to current spot.
+                                    //Check for a spot from start to current spot if spot not already found.
                                     if (!foundSpot)
+                                    {
                                         Debug.Log("Didnt find a spot, trying from start.");
-                                    if (!foundSpot)
                                         for (int i = 0; i <= randx; i++)
                                             for (int j = 0; j < noOfColumns; j++)
                                                 if (!existingObjs.Contains(new Vector2(i, j)) && !foundSpot)
                                                 {
-                                                    Vector3 spawnPos = transform.position;
-                                                    spawnPos.x += i * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / 10.0f);
-                                                    spawnPos.z += j * (spawnerPlane.GetComponent<Renderer>().bounds.size.z + spacing / 10.0f);
-                                                    float y_variation = Random.Range(minHeight, maxHeight);
-                                                    spawnPos.y += y_variation;
-                                                    spawnPos.y += gameObjects[g].GetComponent<Renderer>().bounds.size.y / 2;
-                                                    GameObject spawnedGO = Instantiate(gameObjects[g], spawnPos, Quaternion.identity);
-                                                    spawnedGO.transform.parent = transform;
-
-                                                    if (alphabetsFaceUsersEye)
-                                                    {
-                                                        spawnedGO.transform.LookAt(centerPoint);
-                                                        //spawnedGO.transform.Rotate(Vector3.up, -90);
-                                                        //spawnedGO.transform.rotation.eulerAngles.Set(spawnedGO.transform.rotation.eulerAngles.x, spawnedGO.transform.rotation.eulerAngles.y+90, 0);
-                                                        //spawnedGO.transform.localEulerAngles = (new Vector3(spawnedGO.transform.localEulerAngles.x, spawnedGO.transform.localEulerAngles.y + 180, 0));
-                                                        //spawnedGO.transform.localEulerAngles = (new Vector3(spawnedGO.transform.localEulerAngles.x, spawnedGO.transform.localEulerAngles.y + 180, spawnedGO.transform.localEulerAngles.z));
-                                                        spawnedGO.transform.Rotate(0, 180, 0, Space.Self);
-                                                    }
-                                                    
-                                                    Rigidbody rb = spawnedGO.GetComponent<Rigidbody>();
-                                                    if (rb)
-                                                        rb.useGravity = gravity;
-                                                    existingObjs.Add(new Vector2(i, j));
+                                                    spawn(i, j, g, existingObjs);
                                                     foundSpot = true;
                                                     Debug.Log("Found a spot");
                                                 }
-                                                else
-                                                {
-                                                    Debug.Log("Occupied Position: " + i + "," + j);
-                                                }
+                                    }
+                                                                                                                 
                                 }
                             }
+                            
                             //Current spot was free.
                             else
                             {
                                 Debug.Log("Location free!");
-                                Vector3 spawnPos = transform.position;
-                                spawnPos.x += randx * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / 10.0f);
-                                spawnPos.z += randz * (spawnerPlane.GetComponent<Renderer>().bounds.size.z + spacing / 10.0f);
-                                float y_variation = Random.Range(minHeight, maxHeight);
-                                spawnPos.y += y_variation;
-                                spawnPos.y += gameObjects[g].GetComponent<Renderer>().bounds.size.y / 2;
-                                GameObject spawnedGO = Instantiate(gameObjects[g], spawnPos, Quaternion.identity);
-                                spawnedGO.transform.parent = transform;
-                                if (alphabetsFaceUsersEye)
-                                {
-                                    spawnedGO.transform.LookAt(centerPoint);
-                                    //spawnedGO.transform.Rotate(Vector3.up, -90);
-                                    //spawnedGO.transform.rotation.eulerAngles.Set(spawnedGO.transform.rotation.eulerAngles.x, spawnedGO.transform.rotation.eulerAngles.y+90, 0);
-                                    //spawnedGO.transform.localEulerAngles = (new Vector3(spawnedGO.transform.localEulerAngles.x, spawnedGO.transform.localEulerAngles.y + 180, 0));
-                                    //spawnedGO.transform.localEulerAngles = (new Vector3(spawnedGO.transform.localEulerAngles.x, spawnedGO.transform.localEulerAngles.y + 180, spawnedGO.transform.localEulerAngles.z));
-                                    //spawnedGO.transform.eulerAngles = (new Vector3(spawnedGO.transform.eulerAngles.x, spawnedGO.transform.eulerAngles.y + 180, spawnedGO.transform.localEulerAngles.z));
-                                    spawnedGO.transform.Rotate(0, 180, 0, Space.Self);
-                                }
-                                
-                                Rigidbody rb = spawnedGO.GetComponent<Rigidbody>();
-                                if (rb)
-                                    rb.useGravity = gravity;
-                                existingObjs.Add(new Vector2(randx, randz));
+                                spawn(randx, randz, g, existingObjs);
 
                             }
                         }
@@ -268,8 +208,8 @@ public class SpawnerSettings : MonoBehaviour
                     if (!nonSpawnedArea.Contains(new Vector2(i, j)))
                     {
                         Vector3 spawnPos = transform.position;
-                        spawnPos.x += i * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / 10.0f);
-                        spawnPos.z += j * (spawnerPlane.GetComponent<Renderer>().bounds.size.z + spacing / 10.0f);
+                        spawnPos.x += i * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / spacingScaleFactor);
+                        spawnPos.z += j * (spawnerPlane.GetComponent<Renderer>().bounds.size.z + spacing / spacingScaleFactor);
                         spawnPos.y += minHeight;
                         GameObject spawnedPlanes = Instantiate(spawnerPlane, spawnPos, Quaternion.identity);
                         spawnedPlanes.transform.parent = transform;
@@ -285,8 +225,8 @@ public class SpawnerSettings : MonoBehaviour
                         if (!nonSpawnedArea.Contains(new Vector2(i, j)))
                         {
                             Vector3 spawnPos = transform.position;
-                            spawnPos.x += i * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / 10.0f);
-                            spawnPos.z += j * (spawnerPlane.GetComponent<Renderer>().bounds.size.z + spacing / 10.0f);
+                            spawnPos.x += i * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / spacingScaleFactor);
+                            spawnPos.z += j * (spawnerPlane.GetComponent<Renderer>().bounds.size.z + spacing / spacingScaleFactor);
                             spawnPos.y += maxHeight;
                             GameObject spawnedPlanes = Instantiate(spawnerPlane, spawnPos, Quaternion.identity);
                             spawnedPlanes.transform.parent = transform;
@@ -314,8 +254,8 @@ public class SpawnerSettings : MonoBehaviour
                             for (int j = 0; j < noOfColumns; j++)
                             {
                                 Vector3 spawnPos = transform.position;
-                                spawnPos.x += i * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / 10.0f);
-                                spawnPos.z += j * (spawnerPlane.GetComponent<Renderer>().bounds.size.z + spacing / 10.0f);
+                                spawnPos.x += i * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / spacingScaleFactor);
+                                spawnPos.z += j * (spawnerPlane.GetComponent<Renderer>().bounds.size.z + spacing / spacingScaleFactor);
                                 float y_variation = Random.Range(minHeight, maxHeight);
                                 spawnPos.y += y_variation;
                                 if (Random.Range(0.0f, 100.0f) < spawnIntensity)
@@ -365,8 +305,8 @@ public class SpawnerSettings : MonoBehaviour
                                                 if (!existingObjs.Contains(new Vector2(i, j)) && !foundSpot)
                                                 {
                                                     Vector3 spawnPos = transform.position;
-                                                    spawnPos.x += i * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / 10.0f);
-                                                    spawnPos.z += j * (spawnerPlane.GetComponent<Renderer>().bounds.size.z + spacing / 10.0f);
+                                                    spawnPos.x += i * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / spacingScaleFactor);
+                                                    spawnPos.z += j * (spawnerPlane.GetComponent<Renderer>().bounds.size.z + spacing / spacingScaleFactor);
                                                     float y_variation = Random.Range(minHeight, maxHeight);
                                                     spawnPos.y += y_variation;
                                                     spawnPos.y += gameObjects[g].GetComponent<Renderer>().bounds.size.y / 2;
@@ -396,8 +336,8 @@ public class SpawnerSettings : MonoBehaviour
                                                     if (!existingObjs.Contains(new Vector2(i, j)) && !foundSpot)
                                                     {
                                                         Vector3 spawnPos = transform.position;
-                                                        spawnPos.x += i * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / 10.0f);
-                                                        spawnPos.z += j * (spawnerPlane.GetComponent<Renderer>().bounds.size.z + spacing / 10.0f);
+                                                        spawnPos.x += i * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / spacingScaleFactor);
+                                                        spawnPos.z += j * (spawnerPlane.GetComponent<Renderer>().bounds.size.z + spacing / spacingScaleFactor);
                                                         float y_variation = Random.Range(minHeight, maxHeight);
                                                         spawnPos.y += y_variation;
                                                         spawnPos.y += gameObjects[g].GetComponent<Renderer>().bounds.size.y / 2;
@@ -423,8 +363,8 @@ public class SpawnerSettings : MonoBehaviour
                                 {
                                     Debug.Log("Location free!");
                                     Vector3 spawnPos = transform.position;
-                                    spawnPos.x += randx * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / 10.0f);
-                                    spawnPos.z += randz * (spawnerPlane.GetComponent<Renderer>().bounds.size.z + spacing / 10.0f);
+                                    spawnPos.x += randx * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / spacingScaleFactor);
+                                    spawnPos.z += randz * (spawnerPlane.GetComponent<Renderer>().bounds.size.z + spacing / spacingScaleFactor);
                                     float y_variation = Random.Range(minHeight, maxHeight);
                                     spawnPos.y += y_variation;
                                     spawnPos.y += gameObjects[g].GetComponent<Renderer>().bounds.size.y / 2;
@@ -447,6 +387,49 @@ public class SpawnerSettings : MonoBehaviour
 
             }
         }
+    }
+
+    void spawn(int rowSpawnedAt, int colSpawnedAt, int gameObjectIndex, List<Vector2> existingObjList)
+    {
+        Vector3 spawnPos = transform.position;
+        spawnPos.x += rowSpawnedAt * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / spacingScaleFactor);
+        spawnPos.z += colSpawnedAt * (spawnerPlane.GetComponent<Renderer>().bounds.size.z + spacing / spacingScaleFactor);
+        spawnPos.y += Random.Range(minHeight, maxHeight);
+        spawnPos.y += gameObjects[gameObjectIndex].GetComponent<Renderer>().bounds.size.y / 2;
+        GameObject spawnedGO = Instantiate(gameObjects[gameObjectIndex], spawnPos, Quaternion.identity);
+        spawnedGO.transform.parent = transform;
+
+        if (alphabetsFaceUsersEye)
+        {
+            spawnedGO.transform.LookAt(centerPoint);
+            spawnedGO.transform.Rotate(0, 180, 0, Space.Self);
+            //spawnedGO.transform.Rotate(Vector3.up, -90);                                                
+            //spawnedGO.transform.rotation.eulerAngles.Set(spawnedGO.transform.rotation.eulerAngles.x, spawnedGO.transform.rotation.eulerAngles.y+90,0);
+            //spawnedGO.transform.localEulerAngles = (new Vector3(spawnedGO.transform.localEulerAngles.x, spawnedGO.transform.localEulerAngles.y + 180, spawnedGO.transform.localEulerAngles.z));
+        }
+
+        if (limitMaximumPitchChange)
+        {
+            if(spawnedGO.transform.eulerAngles.x > maximumPitchChange && spawnedGO.transform.eulerAngles.x < 180)
+                spawnedGO.transform.eulerAngles = new Vector3(maximumPitchChange, spawnedGO.transform.eulerAngles.y, spawnedGO.transform.eulerAngles.z);
+            else if( (360 - spawnedGO.transform.eulerAngles.x) > maximumPitchChange && (360 - spawnedGO.transform.eulerAngles.x) < 180)
+                spawnedGO.transform.eulerAngles = new Vector3(-maximumPitchChange, spawnedGO.transform.eulerAngles.y, spawnedGO.transform.eulerAngles.z);
+        }
+
+        Rigidbody rb = spawnedGO.GetComponent<Rigidbody>();
+        if (rb)
+            rb.useGravity = gravity;
+
+        if (floatingEffect)
+        {
+            FloatingEffectController fe =  spawnedGO.AddComponent<FloatingEffectController>();
+            fe.frequency = frequency;
+            fe.amplitude = height;
+            fe.spin = spin;
+            fe.degreesPerSecond = rotationSpeed;
+        }
+            
+        existingObjList.Add(new Vector2(rowSpawnedAt, colSpawnedAt));
     }
 
     void preFill(List<Vector2> existingObjList)
