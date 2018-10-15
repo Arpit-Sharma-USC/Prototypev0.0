@@ -149,7 +149,7 @@ public class SpawnerSettings : MonoBehaviour
             if (useCustomUserEyeLocation)
                 centerPoint = userEyePoint;
             else
-                centerPoint.Set(0f, 4.2f, 0f);
+                centerPoint.Set(0f, 7.2f, 0f);
             //gameObjects = new GameObject[noOfSpawnedObjects];
             foreach (Transform child in transform)
             {
@@ -314,6 +314,7 @@ public class SpawnerSettings : MonoBehaviour
                     soc.floatingEffect = false;
                     child.parent = transform.parent;
                     existingObjs.Remove(soc.pos);
+                    Debug.Log("Found and set");
                 }
             }
             time += Time.deltaTime;
