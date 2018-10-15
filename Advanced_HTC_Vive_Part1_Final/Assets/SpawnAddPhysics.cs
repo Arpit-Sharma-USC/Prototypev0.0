@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnAddPhysics : MonoBehaviour {
+    
 
-   
     void SetPhysicsForNonSolutionBlock()
     {
         BoxCollider gameObjectBC = this.gameObject.AddComponent<BoxCollider>();

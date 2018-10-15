@@ -42,9 +42,11 @@ public class RWVR_InteractionController : MonoBehaviour {
 
                 SpawnerObjectController objectBeingInteracted = overlappedCollider.transform.gameObject.GetComponent<SpawnerObjectController>();
                 objectBeingInteracted.interacted = true;
+
                 ///
                 ///sound forinteracting with gameobject 
                 ///
+                Debug.Log("Play Audio");
                 GetComponent<AudioSource>().Play();
                 // toggle spawn flag : change goes here
 
