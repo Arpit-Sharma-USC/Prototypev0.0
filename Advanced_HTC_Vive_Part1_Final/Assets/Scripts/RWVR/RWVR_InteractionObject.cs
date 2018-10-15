@@ -11,6 +11,7 @@ public class RWVR_InteractionObject : MonoBehaviour
     public virtual void OnTriggerWasPressed(RWVR_InteractionController controller)
     {
         currentController = controller;
+
     }
 
     public virtual void OnTriggerIsBeingPressed(RWVR_InteractionController controller)
