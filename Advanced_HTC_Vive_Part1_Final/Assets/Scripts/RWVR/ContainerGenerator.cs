@@ -19,6 +19,7 @@ public class ContainerGenerator : MonoBehaviour {
     string inputChild;
     string myTag;
 
+
     public GameObject A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z;
 
     void SetContainerPhysics() {
@@ -31,6 +32,10 @@ public class ContainerGenerator : MonoBehaviour {
 
         SendInputString ParentInputObject = Parent.GetComponent<SendInputString>();
         inputChild = ParentInputObject.input.ToUpper();
+
+
+
+
         Parent.SetActive(false);
         //SendInputString.input = "";
 
@@ -102,7 +107,7 @@ public class ContainerGenerator : MonoBehaviour {
             temp2 = temp;
 
             myTag = inputChild[count].ToString();
-
+            //Debug.Log(myTag+"check for space");
             container.tag = this.myTag;
             //Debug.Log("NAmE:" + container.name);
            // container.transform.parent = this.gameObject.transform;// position;
@@ -250,9 +255,6 @@ public class ContainerGenerator : MonoBehaviour {
                 tempObj.tag = myTag;
                 tempObj.SetActive(true);
 
-                //temp2.x+= 0.198f+0.092f-0.413f;
-                //temp2.y+= -0.121f+0.055f-0.062f;
-                //temp2.z+= 0.242f-0.125f+0.109f;
                 temp2.x += 0.033F;
                 temp2.y += -0.09F;
                 temp2.z += 0.164F;

@@ -9,6 +9,8 @@ public class SendInputString : MonoBehaviour {
     public GameObject Parent;
     public Text PuzzleText;
     public string input = "";
+    public Text HintText;
+    public string inputForHint = "";
     private void Start()
     {
         DontDestroyOnLoad(this.gameObject);
@@ -17,6 +19,7 @@ public class SendInputString : MonoBehaviour {
 
     public void ButtonPress() {
         input = PuzzleText.text;
+        inputForHint = HintText.text;
         SceneManager.LoadScene("Game");       
     }
 }
