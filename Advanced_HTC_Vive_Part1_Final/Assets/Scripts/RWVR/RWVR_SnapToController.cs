@@ -18,7 +18,7 @@ public class RWVR_SnapToController : RWVR_InteractionObject
 
     private void ConnectToController(RWVR_InteractionController controller)
     {
-        //cachedTransform.SetParent(controller.transform);
+        cachedTransform.SetParent(controller.transform);
 
         cachedTransform.rotation = controller.transform.rotation;
         cachedTransform.Rotate(snapRotationOffset);

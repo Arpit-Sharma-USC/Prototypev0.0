@@ -7,8 +7,14 @@ public class ContainerGenerator : MonoBehaviour {
 
     public GameObject container;
     public GameObject parentContainer;
+    int[] bitMapSubString;
     public int length = 0;
     private int count = 0;
+    public int No_of_blanks = 2;
+    String SubStringQuestion;
+
+    System.Random rnd = new System.Random();
+
     //private SendInputString Obj;
     string inputChild;
     string myTag;
@@ -24,11 +30,41 @@ public class ContainerGenerator : MonoBehaviour {
         GameObject Parent = GameObject.Find("Parent");
 
         SendInputString ParentInputObject = Parent.GetComponent<SendInputString>();
-        inputChild = ParentInputObject.input;
+        inputChild = ParentInputObject.input.ToUpper();
         Parent.SetActive(false);
         //SendInputString.input = "";
 
+
         length = inputChild.Length;
+
+        
+        SubStringQuestion = inputChild.Substring(1, length - 2);
+
+        bitMapSubString = new int[inputChild.Length];
+
+        for (int i = 0; i < bitMapSubString.Length ; i++)
+        {
+            bitMapSubString[i] = 1;
+            
+        }
+
+        int rand_id;
+        
+        while (No_of_blanks!=0)
+        {
+            rand_id = rnd.Next(1, length - 1);
+            if (bitMapSubString[rand_id] != 0)
+            {
+                bitMapSubString[rand_id] = 0;
+                No_of_blanks--;
+                
+            }
+        }
+
+       
+
+
+
         SetContainerPhysics();
         Debug.Log("message recieved is"+inputChild);
 
@@ -221,7 +257,25 @@ public class ContainerGenerator : MonoBehaviour {
 
 
                 // childObJ.transform.parent = container.transform;
-                childObj.SetActive(false);
+
+                if (bitMapSubString[count] == 0)
+                    childObj.SetActive(false);
+                else
+                {
+                    foo.transform.GetChild(0).gameObject.SetActive(false);
+                    foo.transform.GetChild(1).gameObject.SetActive(false);
+                    foo.transform.GetChild(2).gameObject.SetActive(false);
+                    foo.transform.GetChild(3).gameObject.SetActive(false);
+                    foo.transform.GetChild(4).gameObject.SetActive(false);
+
+                    //foo.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                    //foo.transform.GetChild(1).gameObject.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                    //foo.transform.GetChild(2).gameObject.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                    //foo.transform.GetChild(3).gameObject.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                    //foo.transform.GetChild(4).gameObject.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+
+                }
+
 
                 //  Instantiate(tempObj, temp2, rotat);
 
