@@ -10,7 +10,9 @@ public class ContainerGenerator : MonoBehaviour {
     int[] bitMapSubString;
     public int length = 0;
     private int count = 0;
+
     public int No_of_blanks;
+
     String SubStringQuestion;
 
     System.Random rnd = new System.Random();
@@ -49,6 +51,7 @@ public class ContainerGenerator : MonoBehaviour {
          */
         if (No_of_blanks >=length - 2)
             No_of_blanks = length / 2;
+
 
         Debug.Log("No Blanks:" + No_of_blanks);
         SubStringQuestion = inputChild.Substring(1, length - 2);
