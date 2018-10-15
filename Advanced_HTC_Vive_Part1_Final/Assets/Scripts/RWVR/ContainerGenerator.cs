@@ -37,8 +37,19 @@ public class ContainerGenerator : MonoBehaviour {
 
         length = inputChild.Length;
 
+        /*
+         * if(dificulty.value=="easy")
+         *      No_of_blanks=seteasy();
+         *  else if(dificulty.value=="medium").
+         *      No_of_blanks=setmedium();
+         *  else
+         *      No_of_blanks=sethard();
+
+
+         */
         if (No_of_blanks >=length - 2)
             No_of_blanks = length / 2;
+
         Debug.Log("No Blanks:" + No_of_blanks);
         SubStringQuestion = inputChild.Substring(1, length - 2);
 
