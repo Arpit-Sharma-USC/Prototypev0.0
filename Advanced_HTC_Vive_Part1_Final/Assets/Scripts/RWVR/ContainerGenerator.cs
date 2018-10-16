@@ -7,13 +7,13 @@ public class ContainerGenerator : MonoBehaviour {
 
     public GameObject container;
     public GameObject parentContainer;
-    int[] bitMapSubString;
+    public int[] bitMapSubString;
     public int length = 0;
     private int count = 0;
-    public int No_of_blanks;
+    
     String SubStringQuestion;
 
-    System.Random rnd = new System.Random();
+    //System.Random rnd = new System.Random();
 
     //private SendInputString Obj;
     string inputChild;
@@ -52,34 +52,34 @@ public class ContainerGenerator : MonoBehaviour {
 
 
          */
-        if (No_of_blanks >=length - 2)
-            No_of_blanks = length / 2;
+        //if (No_of_blanks >=length - 2)
+        //    No_of_blanks = length / 2;
 
-        Debug.Log("No Blanks:" + No_of_blanks);
-        SubStringQuestion = inputChild.Substring(1, length - 2);
+        //Debug.Log("No Blanks:" + No_of_blanks);
+        //SubStringQuestion = inputChild.Substring(1, length - 2);
 
-        bitMapSubString = new int[inputChild.Length];
+        bitMapSubString = ParentInputObject.bitMapSubString;
 
-        for (int i = 0; i < bitMapSubString.Length ; i++)
-        {
-            bitMapSubString[i] = 1;
-            
-        }
+        //for (int i = 0; i < bitMapSubString.Length ; i++)
+        //{
+        //    bitMapSubString[i] = 1;
 
-        int rand_id;
-        
-        while (No_of_blanks!=0)
-        {
-            rand_id = rnd.Next(1, length - 1);
-            if (bitMapSubString[rand_id] != 0)
-            {
-                bitMapSubString[rand_id] = 0;
-                No_of_blanks--;
-                
-            }
-        }
+        //}
 
-       
+        //int rand_id;
+
+        //while (No_of_blanks!=0)
+        //{
+        //    rand_id = rnd.Next(1, length - 1);
+        //    if (bitMapSubString[rand_id] != 0)
+        //    {
+        //        bitMapSubString[rand_id] = 0;
+        //        No_of_blanks--;
+
+        //    }
+        //}
+
+
 
 
 

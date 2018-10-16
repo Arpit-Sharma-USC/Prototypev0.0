@@ -41,12 +41,16 @@ public class RWVR_InteractionController : MonoBehaviour {
                 objectBeingInteractedWith.OnTriggerWasPressed(this);
 
                 SpawnerObjectController objectBeingInteracted = overlappedCollider.transform.gameObject.GetComponent<SpawnerObjectController>();
-                objectBeingInteracted.interacted = true;
+                //objectBeingInteracted.interacted = true;
+                SpawnerSettings ss = GameObject.Find("Spawner").GetComponent<SpawnerSettings>();
+                ss.remove(objectBeingInteracted.pos);
+                objectBeingInteracted.spin = false;
+                objectBeingInteracted.floatingEffect = false;
 
                 ///
                 ///sound forinteracting with gameobject 
                 ///
-                Debug.Log("Play Audio");
+                //Debug.Log("Play Audio");
                 GetComponent<AudioSource>().Play();
                 // toggle spawn flag : change goes here
 

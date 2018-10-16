@@ -87,16 +87,20 @@ public class SpawnerSettings : MonoBehaviour
             gameObjects = new List<GameObject>();
             GameObject Parent = GameObject.Find("Parent");
             SendInputString ParentInputObject = Parent.GetComponent<SendInputString>();
+            //Debug.Log("The solution string is " + solutionString);
             if (ParentInputObject)
             {
-
-                solution = solutionString;
+                //ContainerGenerator CG =  GameObject.Find("ContainerBoxParent").GetComponent<ContainerGenerator>();
+                int[] bms = ParentInputObject.bitMapSubString;
+                solution = ParentInputObject.input;
                 for (int i = 0; i <= repetitionCount; i++)
-                    foreach (char letter in solution)
+                    for (int k = 0; k<solution.Length;k++)
                     {
+                        if (bms[k] == 0)
+                            
                         foreach (GameObject go in alphabets)
                         {
-                            if (char.ToLower(go.name[0]) == char.ToLower(letter))
+                            if (char.ToLower(go.name[0]) == char.ToLower(solution[k]))
                                 if (repetiton)
                                     gameObjects.Add(go);
                                 else if (!gameObjects.Contains(go))
@@ -638,6 +642,11 @@ public class SpawnerSettings : MonoBehaviour
             //foreach (Vector2 item in existingObjList) { Debug.Log("Positions generated in preFill: " + item.x + "," + item.y); }
         }
 
+    }
+
+    public void remove(Vector2 pos)
+    {
+        existingObjs.Remove(pos);
     }
 }
 //[CustomEditor(typeof(SpawnerSettings))]
