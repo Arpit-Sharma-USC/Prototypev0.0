@@ -29,10 +29,17 @@ public class SendInputString : MonoBehaviour {
             bitMapSubString[i] = 1;
 
         }
+       
 
+      
         int rand_id;
         if (No_of_blanks >= input.Length - 2)
             No_of_blanks = input.Length / 2;
+
+        Debug.Log("No Blanks:" + No_of_blanks);
+        ContainerCollider.setBlanks(No_of_blanks);
+        Countdown.setBlanksInCountdown(No_of_blanks);
+
         while (No_of_blanks != 0)
         {
             rand_id = rnd.Next(1, input.Length - 1);
