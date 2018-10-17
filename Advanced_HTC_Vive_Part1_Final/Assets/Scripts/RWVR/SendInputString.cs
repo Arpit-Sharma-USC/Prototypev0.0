@@ -18,7 +18,8 @@ public class SendInputString : MonoBehaviour {
     public bool valueOfSpinToggle = false;
     public bool valueOfMissingLettersOnlyToggle = false;
     public Text No_Of_Blank_Text;
-
+    public float spawnIntervalFromUI;
+    public Text SpawnIntervalText;
 
 
     private void Start()
@@ -65,7 +66,7 @@ public class SendInputString : MonoBehaviour {
 
         valueOfSpinToggle = Spin.isOn;
         valueOfMissingLettersOnlyToggle = MissingLettersOnly.isOn;
-        
+        spawnIntervalFromUI = float.Parse(SpawnIntervalText.text);
 
 
         SceneManager.LoadScene("Game");       

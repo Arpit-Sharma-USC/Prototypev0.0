@@ -93,6 +93,13 @@ public class SpawnerSettings : MonoBehaviour
                 //ContainerGenerator CG =  GameObject.Find("ContainerBoxParent").GetComponent<ContainerGenerator>();
                 int[] bms = ParentInputObject.bitMapSubString;
                 solution = ParentInputObject.input;
+                //update other scale features from start scene
+
+                spawnAllOtherAlphabets = !(ParentInputObject.valueOfMissingLettersOnlyToggle);
+                spin = ParentInputObject.valueOfSpinToggle;
+                spawnInterval = ParentInputObject.spawnIntervalFromUI;
+
+
                 for (int i = 0; i <= repetitionCount; i++)
                     for (int k = 0; k<solution.Length;k++)
                     {
