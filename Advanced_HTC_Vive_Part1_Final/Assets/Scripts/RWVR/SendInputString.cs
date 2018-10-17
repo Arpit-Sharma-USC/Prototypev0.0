@@ -13,15 +13,27 @@ public class SendInputString : MonoBehaviour {
     public string inputForHint = "";
     public int[] bitMapSubString;
     public int No_of_blanks;
+    public Toggle Spin ;
+    public Toggle MissingLettersOnly ;
+    public bool valueOfSpinToggle = false;
+    public bool valueOfMissingLettersOnlyToggle = false;
+    public Text No_Of_Blank_Text;
+
+
+
     private void Start()
     {
         DontDestroyOnLoad(this.gameObject);
         ContainerGenerator obj = new ContainerGenerator();
     }
 
+  
     public void ButtonPress() {
         input = PuzzleText.text;
         inputForHint = HintText.text;
+   
+        No_of_blanks = int.Parse(No_Of_Blank_Text.text);
+
         bitMapSubString = new int[input.Length];
         System.Random rnd = new System.Random();
         for (int i = 0; i < bitMapSubString.Length; i++)
@@ -50,6 +62,12 @@ public class SendInputString : MonoBehaviour {
 
             }
         }
+
+        valueOfSpinToggle = Spin.isOn;
+        valueOfMissingLettersOnlyToggle = MissingLettersOnly.isOn;
+        
+
+
         SceneManager.LoadScene("Game");       
     }
 }
