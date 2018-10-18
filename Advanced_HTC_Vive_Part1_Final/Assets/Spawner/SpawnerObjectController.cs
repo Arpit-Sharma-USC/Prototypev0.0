@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawnerObjectController : MonoBehaviour {
+public class SpawnerObjectController : MonoBehaviour
+{
     // User Inputs
     public float degreesPerSecond = 15.0f;
     public float amplitude = 0.01f;
@@ -40,6 +41,12 @@ public class SpawnerObjectController : MonoBehaviour {
 
             transform.position = tempPos;
         }
-        
+
+    }
+    public void startFloating()
+    {
+        posOffset = transform.position;
+        floatingEffect = true;
+        startingPoint = Random.Range(0.0f, 6.283f);
     }
 }
