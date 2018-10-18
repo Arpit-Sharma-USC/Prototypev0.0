@@ -42,4 +42,10 @@ public class SpawnerObjectController : MonoBehaviour {
         }
         
     }
+    public void startFloating()
+    {
+        posOffset = transform.position;
+        floatingEffect = true;
+        startingPoint = Random.Range(0.0f, 6.283f);
+    }
 }
