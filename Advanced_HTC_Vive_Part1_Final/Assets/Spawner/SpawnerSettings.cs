@@ -66,7 +66,10 @@ public class SpawnerSettings : MonoBehaviour
     Vector3 centerPoint;
     float spacingScaleFactor = 10.0f;
     float time = 0;
-
+    //int flyingCount = 0;
+    List<GameObject> toFly;
+    List<Vector3> flyingTo;
+    float flyingSpeed = 2;
     // Use this for initialization
     void Start()
     {
@@ -81,6 +84,8 @@ public class SpawnerSettings : MonoBehaviour
         //if (Application.isPlaying)
         if (Application.isPlaying)
         {
+            toFly = new List<GameObject>();
+            flyingTo = new List<Vector3>();
             existingObjs = new List<Vector2>();
             preFill();
             GameObject[] alphabets = Resources.LoadAll<GameObject>("Spawner Prefabs");
@@ -169,7 +174,7 @@ public class SpawnerSettings : MonoBehaviour
             }
 
             if (gameObjects.Count > 0)
-                //If no restriction on spawnining duplicates.
+                //If no restriction on spawning duplicates.
                 if (spawnAtMultiplePlaces)
                 {
                     for (int i = 0; i < noOfRows; i++)
@@ -323,83 +328,174 @@ public class SpawnerSettings : MonoBehaviour
                 //Debug.Log("Found and set");                    
 
             }
-            time += Time.deltaTime;
+
+            if(toFly.Count == 0)
+                time += Time.deltaTime;
+            else
+            {
+                for(int i = 0; i<toFly.Count; i++)
+                {
+                    toFly[i].transform.position = Vector3.MoveTowards(toFly[i].transform.position, flyingTo[i], flyingSpeed * Time.deltaTime);
+                    if(toFly[i].transform.position == flyingTo[i])
+                    {
+                        toFly.Remove(toFly[i]);
+                        flyingTo.Remove(flyingTo[i]);
+                        i--;
+                    }
+
+                }
+            }
             if (time >= spawnInterval)
             {
-                //bool found = false;
-                //while (!found && transform.childCount > 0)
-                //{
-                int randomObj = Random.Range(0, transform.childCount);
-                string name = transform.GetChild(randomObj).gameObject.name;
-                SpawnerObjectController soc = transform.GetChild(randomObj).gameObject.GetComponent<SpawnerObjectController>();
-                existingObjs.Remove(soc.pos);
-                GameObject.Destroy(transform.GetChild(randomObj).gameObject);
-                for (int g = 0; g < gameObjects.Count; g++)
-                    if (char.ToLower(gameObjects[g].name[0]) == char.ToLower(name[0]))
+                foreach (Transform child in transform)
+                {
+                    toFly.Add(child.gameObject);
+
+                }
+
+                existingObjs.Clear();
+                for(int p = 0; p < toFly.Count; p++)
+                {
+                    //Debug.Log("Entering.");
+                    int randx = Random.Range(0, noOfRows);
+                    int randz = Random.Range(0, noOfColumns);
+                    Debug.Log("Location generated: " + randx + "," + randz);
+
+                    //Check if spot is already occupied.
+                    if (existingObjs.Contains(new Vector2(randx, randz)))
                     {
-                        Debug.Log("Obj: " + g);
-                        //float randIntensity = Random.Range(0.0f, 100.0f);
-                        //Debug.Log("SpawnIntensity: " + randIntensity);
-                        //if (randIntensity < spawnIntensity)
-                        if (true)
+                        Debug.Log("Location not free!");
+
+                        //If grid still has spots, check next available spot from current spot.
+                        if (existingObjs.Count <= (noOfRows * noOfColumns))
                         {
-                            //Debug.Log("Entering.");
-                            int randx = Random.Range(0, noOfRows);
-                            int randz = Random.Range(0, noOfColumns);
-                            Debug.Log("Location generated: " + randx + "," + randz);
-
-                            //Check if spot is already occupied.
-                            if (existingObjs.Contains(new Vector2(randx, randz)))
-                            {
-                                Debug.Log("Location not free!");
-
-                                //If grid still has spots, check next available spot from current spot.
-                                if (existingObjs.Count <= (noOfRows * noOfColumns))
+                            bool foundSpot = false;
+                            //Check for next available spot from the current spot.
+                            Debug.Log("Checking next available spot from current spot.");
+                            for (int i = randx + 1; i < noOfRows; i++)
+                                for (int j = 0; j < noOfColumns; j++)
                                 {
-                                    bool foundSpot = false;
-                                    //Check for next available spot from the current spot.
-                                    Debug.Log("Checking next available spot from current spot.");
-                                    for (int i = randx + 1; i < noOfRows; i++)
-                                        for (int j = 0; j < noOfColumns; j++)
-                                        {
-                                            if (i == randx && j <= randz)
-                                                continue;
-                                            if (!existingObjs.Contains(new Vector2(i, j)) && !foundSpot)
-                                            {
-                                                spawn(i, j, g);
-                                                foundSpot = true;
-                                                Debug.Log("Found a spot");
-                                            }
-                                        }
-
-                                    //Check for a spot from start to current spot if spot not already found.
-                                    if (!foundSpot)
+                                    if (i == randx && j <= randz)
+                                        continue;
+                                    if (!existingObjs.Contains(new Vector3(i, j)) && !foundSpot)
                                     {
-                                        Debug.Log("Didnt find a spot, trying from start.");
-                                        for (int i = 0; i <= randx; i++)
-                                            for (int j = 0; j < noOfColumns; j++)
-                                                if (!existingObjs.Contains(new Vector2(i, j)) && !foundSpot)
-                                                {
-                                                    spawn(i, j, g);
-                                                    foundSpot = true;
-                                                    Debug.Log("Found a spot");
-                                                }
+                                        flyingTo.Add(new Vector3(i, 0, j));
+                                        foundSpot = true;
+                                        Debug.Log("Found a spot");
                                     }
                                 }
-                            }
 
-                            //Current spot was free.
-                            else
+                            //Check for a spot from start to current spot if spot not already found.
+                            if (!foundSpot)
                             {
-                                Debug.Log("Location free!");
-                                spawn(randx, randz, g);
-
+                                Debug.Log("Didnt find a spot, trying from start.");
+                                for (int i = 0; i <= randx; i++)
+                                    for (int j = 0; j < noOfColumns; j++)
+                                        if (!existingObjs.Contains(new Vector2(i, j)) && !foundSpot)
+                                        {
+                                            flyingTo.Add(new Vector3(i, 0, j));
+                                            foundSpot = true;
+                                            Debug.Log("Found a spot");
+                                        }
                             }
                         }
                     }
 
+                    //Current spot was free.
+                    else
+                    {
+                        Debug.Log("Location free!");
+                        flyingTo.Add(new Vector3(randx,0, randz));
 
-                //}
+                    }
+                }
+
+                //convert flying pos from row-col to locations.
+                for(int i = 0; i< flyingTo.Count; i++)
+                {
+                    Vector3 spawnPos = transform.position;
+                    spawnPos.x += flyingTo[i].x * (spawnerPlane.GetComponent<Renderer>().bounds.size.x + spacing / spacingScaleFactor);
+                    spawnPos.z += flyingTo[i].z * (spawnerPlane.GetComponent<Renderer>().bounds.size.z + spacing / spacingScaleFactor);
+                    spawnPos.y += Random.Range(minHeight, maxHeight);
+
+                    flyingTo[i] = spawnPos;
+                }
+                
+                
+
+                
+
+
+                //string name = transform.GetChild(randomObj).gameObject.name;
+                //SpawnerObjectController soc = transform.GetChild(randomObj).gameObject.GetComponent<SpawnerObjectController>();
+                //existingObjs.Remove(soc.pos);
+                //GameObject.Destroy(transform.GetChild(randomObj).gameObject);
+                //for (int g = 0; g < gameObjects.Count; g++)
+                //    if (char.ToLower(gameObjects[g].name[0]) == char.ToLower(name[0]))
+                //    {
+                //        Debug.Log("Obj: " + g);
+                //        //float randIntensity = Random.Range(0.0f, 100.0f);
+                //        //Debug.Log("SpawnIntensity: " + randIntensity);
+                //        //if (randIntensity < spawnIntensity)
+                //        if (true)
+                //        {
+                //            //Debug.Log("Entering.");
+                //            int randx = Random.Range(0, noOfRows);
+                //            int randz = Random.Range(0, noOfColumns);
+                //            Debug.Log("Location generated: " + randx + "," + randz);
+
+                //            //Check if spot is already occupied.
+                //            if (existingObjs.Contains(new Vector2(randx, randz)))
+                //            {
+                //                Debug.Log("Location not free!");
+
+                //                //If grid still has spots, check next available spot from current spot.
+                //                if (existingObjs.Count <= (noOfRows * noOfColumns))
+                //                {
+                //                    bool foundSpot = false;
+                //                    //Check for next available spot from the current spot.
+                //                    Debug.Log("Checking next available spot from current spot.");
+                //                    for (int i = randx + 1; i < noOfRows; i++)
+                //                        for (int j = 0; j < noOfColumns; j++)
+                //                        {
+                //                            if (i == randx && j <= randz)
+                //                                continue;
+                //                            if (!existingObjs.Contains(new Vector2(i, j)) && !foundSpot)
+                //                            {
+                //                                spawn(i, j, g);
+                //                                foundSpot = true;
+                //                                Debug.Log("Found a spot");
+                //                            }
+                //                        }
+
+                //                    //Check for a spot from start to current spot if spot not already found.
+                //                    if (!foundSpot)
+                //                    {
+                //                        Debug.Log("Didnt find a spot, trying from start.");
+                //                        for (int i = 0; i <= randx; i++)
+                //                            for (int j = 0; j < noOfColumns; j++)
+                //                                if (!existingObjs.Contains(new Vector2(i, j)) && !foundSpot)
+                //                                {
+                //                                    spawn(i, j, g);
+                //                                    foundSpot = true;
+                //                                    Debug.Log("Found a spot");
+                //                                }
+                //                    }
+                //                }
+                //            }
+
+                //            //Current spot was free.
+                //            else
+                //            {
+                //                Debug.Log("Location free!");
+                //                spawn(randx, randz, g);
+
+                //            }
+                //        }
+                //    }
+
+
+                
 
 
                 time = 0;
@@ -649,6 +745,12 @@ public class SpawnerSettings : MonoBehaviour
     {
         existingObjs.Remove(pos);
     }
+
+    //IEnumerator waitAndFly(float waitTime, int rowNo, int colNo, GameObject go)
+    //{
+    //    yield return new WaitForSeconds(waitTime);
+    //    go.transform.position = Vector3.MoveTowards(transform.position, target.position, step);
+    //}
 }
 //[CustomEditor(typeof(SpawnerSettings))]
 //public class SpawnerSettingsEditor : Editor
