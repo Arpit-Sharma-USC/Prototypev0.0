@@ -319,13 +319,19 @@ public class SpawnerSettings : MonoBehaviour
             foreach (Transform child in transform)
             {
                 SpawnerObjectController soc = child.gameObject.GetComponent<SpawnerObjectController>();
-                if (soc.interacted)
+                //if (soc.interacted)
+                //{
+                soc.spin = spin;
+                soc.floatingEffect = floatingEffect;
+                //child.parent = transform.parent;
+                //existingObjs.Remove(soc.pos);
+                //Debug.Log("Found and set");
+                //}
+                if (child.gameObject.transform.position.y <= (transform.position.y + child.gameObject.GetComponent<Renderer>().bounds.size.y / 2)
+                    || child.gameObject.transform.position.y <= (transform.position.y + child.gameObject.GetComponent<Renderer>().bounds.size.x / 2)
+                    || child.gameObject.transform.position.y <= (transform.position.y + child.gameObject.GetComponent<Renderer>().bounds.size.z / 2))
                 {
-                    soc.spin = false;
-                    soc.floatingEffect = false;
-                    child.parent = transform.parent;
-                    existingObjs.Remove(soc.pos);
-                    Debug.Log("Found and set");
+                    Debug.Log("fallen");
                 }
             }
             time += Time.deltaTime;
