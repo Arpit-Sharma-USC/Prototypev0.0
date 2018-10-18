@@ -39,7 +39,7 @@ public class SpawnerSettings : MonoBehaviour
     public bool limitMaximumPitchChange = false;
     public float maximumPitchChange = 30.0f;
 
-    /////Spawn Dynamics Settings/////
+    /////Spawn Dynamics/////
     public float spawnIntensity = 100;
     public float spawnInterval = 3;
     public bool gravity = false;
@@ -70,7 +70,7 @@ public class SpawnerSettings : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        
+
 
         //GameObject spawnedPlanes = Instantiate(spawnerPlane, centerPoint, Quaternion.identity);
         if (Application.isEditor && !Application.isPlaying)
@@ -88,31 +88,32 @@ public class SpawnerSettings : MonoBehaviour
             GameObject Parent = GameObject.Find("Parent");
             SendInputString ParentInputObject = Parent.GetComponent<SendInputString>();
             //Debug.Log("The solution string is " + solutionString);
+
+            //If receiving from start scene.
             if (ParentInputObject)
             {
                 //ContainerGenerator CG =  GameObject.Find("ContainerBoxParent").GetComponent<ContainerGenerator>();
                 int[] bms = ParentInputObject.bitMapSubString;
                 solution = ParentInputObject.input;
-                //update other scale features from start scene
 
+                //update other scalability features from the start scene.
                 spawnAllOtherAlphabets = !(ParentInputObject.valueOfMissingLettersOnlyToggle);
                 spin = ParentInputObject.valueOfSpinToggle;
                 spawnInterval = ParentInputObject.spawnIntervalFromUI;
 
 
                 for (int i = 0; i <= repetitionCount; i++)
-                    for (int k = 0; k<solution.Length;k++)
+                    for (int k = 0; k < solution.Length; k++)
                     {
                         if (bms[k] == 0)
-                            
-                        foreach (GameObject go in alphabets)
-                        {
-                            if (char.ToLower(go.name[0]) == char.ToLower(solution[k]))
-                                if (repetiton)
-                                    gameObjects.Add(go);
-                                else if (!gameObjects.Contains(go))
-                                    gameObjects.Add(go);
-                        }
+                            foreach (GameObject go in alphabets)
+                            {
+                                if (char.ToLower(go.name[0]) == char.ToLower(solution[k]))
+                                    if (repetiton)
+                                        gameObjects.Add(go);
+                                    else if (!gameObjects.Contains(go))
+                                        gameObjects.Add(go);
+                            }
                     }
             }
             else
@@ -148,13 +149,13 @@ public class SpawnerSettings : MonoBehaviour
             else
             {
                 foreach (GameObject go in nonSolutionAlphabets)
-                    if (otherAlphabetsToSpawn.ToLower().Contains(char.ToLower(go.name[0]))) 
+                    if (otherAlphabetsToSpawn.ToLower().Contains(char.ToLower(go.name[0])))
                         gameObjects.Add(go);
             }
-            
+
 
             foreach (GameObject go in gameObjects) Debug.Log(go.name);
-                        
+
             //centerPoint.Set(0.6f,1.0869f,0.6f);
             //centerPoint.Set(-3f, 4f, -5f);
             if (useCustomUserEyeLocation)
@@ -195,7 +196,7 @@ public class SpawnerSettings : MonoBehaviour
                 }
                 //If each object is to be spawned only once. The Currently worked on one.
                 else
-                {                   
+                {
 
                     for (int g = 0; g < gameObjects.Count; g++)
                     {
@@ -246,10 +247,10 @@ public class SpawnerSettings : MonoBehaviour
                                                     Debug.Log("Found a spot");
                                                 }
                                     }
-                                                                                                                 
+
                                 }
                             }
-                            
+
                             //Current spot was free.
                             else
                             {
@@ -279,7 +280,7 @@ public class SpawnerSettings : MonoBehaviour
                 DestroyImmediate(transform.GetChild(0).gameObject);
             }
             existingObjs = new List<Vector2>();
-            preFill();           
+            preFill();
             for (int i = 0; i < noOfRows; i++)
                 for (int j = 0; j < noOfColumns; j++)
                 {
@@ -292,10 +293,7 @@ public class SpawnerSettings : MonoBehaviour
                         GameObject spawnedPlanes = Instantiate(spawnerPlane, spawnPos, Quaternion.identity);
                         spawnedPlanes.transform.parent = transform;
                     }
-
-
                 }
-
             if (maxHeight != 0)
                 for (int i = 0; i < noOfRows; i++)
                     for (int j = 0; j < noOfColumns; j++)
@@ -309,7 +307,6 @@ public class SpawnerSettings : MonoBehaviour
                             GameObject spawnedPlanes = Instantiate(spawnerPlane, spawnPos, Quaternion.identity);
                             spawnedPlanes.transform.parent = transform;
                         }
-
                     }
         }
 
@@ -319,14 +316,12 @@ public class SpawnerSettings : MonoBehaviour
             foreach (Transform child in transform)
             {
                 SpawnerObjectController soc = child.gameObject.GetComponent<SpawnerObjectController>();
-                if (soc.interacted)
-                {
-                    soc.spin = false;
-                    soc.floatingEffect = false;
-                    child.parent = transform.parent;
-                    existingObjs.Remove(soc.pos);
-                    Debug.Log("Found and set");
-                }
+                soc.spin = spin;
+                soc.floatingEffect = floatingEffect;
+                //child.parent = transform.parent;
+                //existingObjs.Remove(soc.pos);
+                //Debug.Log("Found and set");                    
+
             }
             time += Time.deltaTime;
             if (time >= spawnInterval)
@@ -339,14 +334,14 @@ public class SpawnerSettings : MonoBehaviour
                 SpawnerObjectController soc = transform.GetChild(randomObj).gameObject.GetComponent<SpawnerObjectController>();
                 existingObjs.Remove(soc.pos);
                 GameObject.Destroy(transform.GetChild(randomObj).gameObject);
-                for(int g = 0; g<gameObjects.Count; g++)
+                for (int g = 0; g < gameObjects.Count; g++)
                     if (char.ToLower(gameObjects[g].name[0]) == char.ToLower(name[0]))
                     {
                         Debug.Log("Obj: " + g);
                         //float randIntensity = Random.Range(0.0f, 100.0f);
                         //Debug.Log("SpawnIntensity: " + randIntensity);
                         //if (randIntensity < spawnIntensity)
-                        if(true)
+                        if (true)
                         {
                             //Debug.Log("Entering.");
                             int randx = Random.Range(0, noOfRows);
@@ -390,7 +385,6 @@ public class SpawnerSettings : MonoBehaviour
                                                     Debug.Log("Found a spot");
                                                 }
                                     }
-
                                 }
                             }
 
@@ -404,7 +398,7 @@ public class SpawnerSettings : MonoBehaviour
                         }
                     }
 
-                
+
                 //}
 
 
@@ -439,7 +433,7 @@ public class SpawnerSettings : MonoBehaviour
                 //    }
                 //    else
                 //    {
-                        
+
 
                 //        for (int g = 0; g < gameObjects.Count; g++)
                 //        {
@@ -576,9 +570,9 @@ public class SpawnerSettings : MonoBehaviour
 
         if (limitMaximumPitchChange)
         {
-            if(spawnedGO.transform.eulerAngles.x > maximumPitchChange && spawnedGO.transform.eulerAngles.x < 180)
+            if (spawnedGO.transform.eulerAngles.x > maximumPitchChange && spawnedGO.transform.eulerAngles.x < 180)
                 spawnedGO.transform.eulerAngles = new Vector3(maximumPitchChange, spawnedGO.transform.eulerAngles.y, spawnedGO.transform.eulerAngles.z);
-            else if( (360 - spawnedGO.transform.eulerAngles.x) > maximumPitchChange && (360 - spawnedGO.transform.eulerAngles.x) < 180)
+            else if ((360 - spawnedGO.transform.eulerAngles.x) > maximumPitchChange && (360 - spawnedGO.transform.eulerAngles.x) < 180)
                 spawnedGO.transform.eulerAngles = new Vector3(-maximumPitchChange, spawnedGO.transform.eulerAngles.y, spawnedGO.transform.eulerAngles.z);
         }
 
@@ -598,7 +592,7 @@ public class SpawnerSettings : MonoBehaviour
         fe.pos = new Vector2(rowSpawnedAt, colSpawnedAt);
 
         existingObjs.Add(new Vector2(rowSpawnedAt, colSpawnedAt));
-        
+
     }
 
     void preFill()
@@ -641,10 +635,10 @@ public class SpawnerSettings : MonoBehaviour
 
             foreach (int rowNo in rowNos)
                 foreach (int colNo in colNos)
-                    if(!existingObjs.Contains(new Vector2(rowNo, colNo)))
+                    if (!existingObjs.Contains(new Vector2(rowNo, colNo)))
                         existingObjs.Add(new Vector2(rowNo, colNo));
-                        
-                        
+
+
 
             //foreach (Vector2 item in existingObjList) { Debug.Log("Positions generated in preFill: " + item.x + "," + item.y); }
         }
