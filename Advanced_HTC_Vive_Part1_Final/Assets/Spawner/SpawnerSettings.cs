@@ -332,6 +332,75 @@ public class SpawnerSettings : MonoBehaviour
                     || child.gameObject.transform.position.y <= (transform.position.y + child.gameObject.GetComponent<Renderer>().bounds.size.z / 2))
                 {
                     Debug.Log("fallen");
+                    string name = child.gameObject.name;
+                    SpawnerObjectController socloc = child.gameObject.GetComponent<SpawnerObjectController>();
+                    existingObjs.Remove(socloc.pos);
+                    GameObject.Destroy(child.gameObject);
+                    for (int g = 0; g < gameObjects.Count; g++)
+                        if (char.ToLower(gameObjects[g].name[0]) == char.ToLower(name[0]))
+                        {
+                            Debug.Log("Obj: " + g);
+                            //float randIntensity = Random.Range(0.0f, 100.0f);
+                            //Debug.Log("SpawnIntensity: " + randIntensity);
+                            //if (randIntensity < spawnIntensity)
+                            if (true)
+                            {
+                                //Debug.Log("Entering.");
+                                int randx = Random.Range(0, noOfRows);
+                                int randz = Random.Range(0, noOfColumns);
+                                Debug.Log("Location generated: " + randx + "," + randz);
+
+                                //Check if spot is already occupied.
+                                if (existingObjs.Contains(new Vector2(randx, randz)))
+                                {
+                                    Debug.Log("Location not free!");
+
+                                    //If grid still has spots, check next available spot from current spot.
+                                    if (existingObjs.Count <= (noOfRows * noOfColumns))
+                                    {
+                                        bool foundSpot = false;
+                                        //Check for next available spot from the current spot.
+                                        Debug.Log("Checking next available spot from current spot.");
+                                        for (int i = randx + 1; i < noOfRows; i++)
+                                            for (int j = 0; j < noOfColumns; j++)
+                                            {
+                                                if (i == randx && j <= randz)
+                                                    continue;
+                                                if (!existingObjs.Contains(new Vector2(i, j)) && !foundSpot)
+                                                {
+                                                    spawn(i, j, g);
+                                                    foundSpot = true;
+                                                    Debug.Log("Found a spot");
+                                                }
+                                            }
+
+                                        //Check for a spot from start to current spot if spot not already found.
+                                        if (!foundSpot)
+                                        {
+                                            Debug.Log("Didnt find a spot, trying from start.");
+                                            for (int i = 0; i <= randx; i++)
+                                                for (int j = 0; j < noOfColumns; j++)
+                                                    if (!existingObjs.Contains(new Vector2(i, j)) && !foundSpot)
+                                                    {
+                                                        spawn(i, j, g);
+                                                        foundSpot = true;
+                                                        Debug.Log("Found a spot");
+                                                    }
+                                        }
+
+                                    }
+                                }
+
+                                //Current spot was free.
+                                else
+                                {
+                                    Debug.Log("Location free!");
+                                    spawn(randx, randz, g);
+
+                                }
+                            }
+                        }
+
                 }
             }
             time += Time.deltaTime;
