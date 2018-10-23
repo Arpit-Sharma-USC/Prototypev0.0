@@ -6,8 +6,23 @@ using UnityEngine;
 public class ContainerGenerator : MonoBehaviour {
 
     public GameObject container;
+<<<<<<< HEAD
     public int length = 0;
     private int count = 0;
+=======
+    public GameObject parentContainer;
+    public int[] bitMapSubString;
+    public int length = 0;
+    private int count = 0;
+
+  //  public int No_of_blanks;
+
+
+    String SubStringQuestion;
+
+    //System.Random rnd = new System.Random();
+
+>>>>>>> 366a4321704ce7c02f4dd1da419aa009951f5488
     //private SendInputString Obj;
     string inputChild;
     string myTag;
@@ -26,6 +41,57 @@ public class ContainerGenerator : MonoBehaviour {
         //SendInputString.input = "";
 
         length = inputChild.Length;
+<<<<<<< HEAD
+=======
+
+        /*
+         * if(dificulty.value=="easy")
+         *      No_of_blanks=seteasy();
+         *  else if(dificulty.value=="medium").
+         *      No_of_blanks=setmedium();
+         *  else
+         *      No_of_blanks=sethard();
+
+
+         */
+        //if (No_of_blanks >= length - 2)
+        //    No_of_blanks = length / 2;
+
+        //Debug.Log("No Blanks:" + No_of_blanks);
+        //ContainerCollider.setBlanks(No_of_blanks);
+        //Countdown.setBlanksInCountdown(No_of_blanks);
+
+
+        //Debug.Log("No Blanks:" + No_of_blanks);
+        //SubStringQuestion = inputChild.Substring(1, length - 2);
+
+        bitMapSubString = ParentInputObject.bitMapSubString;
+
+        //for (int i = 0; i < bitMapSubString.Length ; i++)
+        //{
+        //    bitMapSubString[i] = 1;
+
+        //}
+
+        //int rand_id;
+
+        //while (No_of_blanks!=0)
+        //{
+        //    rand_id = rnd.Next(1, length - 1);
+        //    if (bitMapSubString[rand_id] != 0)
+        //    {
+        //        bitMapSubString[rand_id] = 0;
+        //        No_of_blanks--;
+
+        //    }
+        //}
+
+
+
+
+
+        SetContainerPhysics();
+>>>>>>> 366a4321704ce7c02f4dd1da419aa009951f5488
         Debug.Log("message recieved is"+inputChild);
         CreateContainers();
     }
